@@ -168,7 +168,7 @@ for proposition in propositions: # Propositions as formulas
 		atom = atoms_node[index_atom]
 		
 		if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
-			if not isInAtom(proposition,atom):
+			if not isInAtom(proposition.formula,atom):
 				atoms_node[index_atom].append(proposition)
 		else:
 			delete_atoms.append(index_atom)
