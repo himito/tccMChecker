@@ -28,11 +28,11 @@ class Formula:
 	
 	def getNegation(self):
 		if self.getConnective() == "~":
-			if self.isPreposition():
+			if self.isProposition():
 				return Formula({"": self.getValues()})
 			else:
 				return Formula(self.getValues())
-		elif self.isPreposition():
+		elif self.isProposition():
 			return Formula({"~": self.getValues()})
 		else:
 			return Formula({"~": self.formula})
@@ -48,13 +48,13 @@ class Formula:
 	def getConnective(self):
 		return self.formula.keys()[0]
 	
-	def isPreposition(self):
+	def isProposition(self):
 		if len(self.formula) == 1 and (self.getConnective() not in self.operators[:-1]):
 			return self.formula.values()[0] in self.propositions
 		return False
 		
 	def isBasic(self):
-		if self.getConnective() != "~" and (self.isPreposition() or self.getConnective() == "o"):
+		if self.getConnective() != "~" and (self.isProposition() or self.getConnective() == "o"):
 			if self.getConnective() == "o" and type(self.getValues()) != str and self.getValues().keys()[0] == "~":
 				return False
 			return True

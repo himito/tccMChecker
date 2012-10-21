@@ -10,7 +10,7 @@ def getClosure(formula, closure):
 	
 	subformula = formula.getValues()
 	
-	if formula.isPreposition(): # Preposition rule
+	if formula.isProposition(): # Preposition rule
 		closure.append(Formula({"": subformula})) # p
 		closure.append(Formula({"~": subformula})) # ~p
 	

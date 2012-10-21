@@ -17,6 +17,15 @@ print "Formula: "
 print phi.formula
 
 ######################################## Closure ########################################
+closure = []
+getClosure(phi,closure)
+
+print "Clausura: ", len(closure)
+for formula in closure:
+	print formula.formula
+
+
+######################################## Atoms ########################################
 def getBasicFormulas(closure):
 	basicFormulas = []
 	for formula in closure:
@@ -24,42 +33,66 @@ def getBasicFormulas(closure):
 			basicFormulas.append(formula)
 	return basicFormulas
 
+def searchFormulas(formulas, connective):
+	result = []
+	for formula in formulas:
+		if formula.getConnective() == connective:
+			result.append(formula)
+	return result
 
-closure = []
-getClosure(phi,closure)
+def getAllAtoms(basicFormulas):
+	num_atoms = 2**len(basicFormulas)
+	atoms =  [ [] for i in range(num_atoms) ]
+
+	# 2^b Combinations
+	for index_basic_formula in range(len(basicFormulas)):
+		num = 2** index_basic_formula
+		index_negative = 0
+		negative = False
+		for index in range(num_atoms):
+			if index_negative == num:
+				negative = not(negative)
+				index_negative = 0
+			if negative:
+				atoms[index].append(basicFormulas[index_basic_formula].getNegation())
+			else:
+				atoms[index].append(basicFormulas[index_basic_formula])
+			index_negative += 1
+		
+	# o~phi
+	f_temps = searchFormulas(basicFormulas,"o")
+	for formula in f_temps:
+		for atom in atoms:
+			if formula not in atom:
+				atom.append(Formula({"o":{"~": formula.getValues()}}))
+	
+	return atoms
+
+
+# Basic Formulas
 basicFormulas = getBasicFormulas(closure)
-
-print "Clausura: ", len(closure)
-for formula in closure:
-	print formula.formula
-
 print "Basic Formulas"
 for formula in basicFormulas:
 	print formula.formula
 
-######################################## Atoms ########################################
 
-num_atoms = 2**len(basicFormulas)
-atoms =  [ [] for i in range(num_atoms) ]
-print "Atoms: ", num_atoms
-for index_basic_formula in range(len(basicFormulas)):
-	num = 2** index_basic_formula
-	index_negative = 0
-	negative = False
-	for index in range(num_atoms):
-		if index_negative == num:
-			negative = not(negative)
-			index_negative = 0
-		if negative:
-			atoms[index].append(basicFormulas[index_basic_formula].getNegation())
-		else:
-			atoms[index].append(basicFormulas[index_basic_formula])
-		index_negative += 1
-
+# All Atoms
+atoms = getAllAtoms(basicFormulas)
+print "Atoms: ", len(atoms)
 for atom in atoms:
 	for formula in atom:
 		print formula.formula, " | ",
 	print "\n"
+
+
+print "Nueva closure:"
+
+for formula in closure:
+	if formula.getConnective() != "~" and formula.getConnective() != "o" and not formula.isProposition():
+		print formula.formula	
+	
+	
+
 
 
 
@@ -68,8 +101,3 @@ for atom in atoms:
 # propositions = tcc_structure.get(tcc_node).get("store")
 # for proposition in propositions: # Propositions as formulas
 # 	atom.append(Formula(proposition))
-
-
-# print "Atoms:"
-# for formula in atom:
-# 	print formula.formula
