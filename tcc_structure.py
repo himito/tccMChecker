@@ -156,28 +156,37 @@ def propositionConsistent(formula, atom):
 		if isConsistent(Formula(formula.getPropositionConsistent()), atom):
 			return True
 	return False
-
-tcc_node = 6
-atoms_node = atoms
-propositions = tcc_structure.get(tcc_node).get("store")
-print "Atoms State", tcc_node
-for proposition in propositions: # Propositions as formulas
-	index_atom = 0
-	delete_atoms = []
-	while index_atom < len(atoms_node):
-		atom = atoms_node[index_atom]
+	
+	
+def getModelCheckingAtoms(tcc_structure, atoms):
+	model_checking_atoms = {}
+	for tcc_node in tcc_structure.keys():
+		atoms_node = atoms
+		propositions = tcc_structure.get(tcc_node).get("store")
+		for proposition in propositions: # Propositions as formulas
+			index_atom = 0
+			delete_atoms = []
+			while index_atom < len(atoms_node):
+				atom = atoms_node[index_atom]
 		
-		if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
-			if not isInAtom(proposition.formula,atom):
-				atoms_node[index_atom].append(proposition)
-		else:
-			delete_atoms.append(index_atom)
-		index_atom +=1
-	atoms_node = deleteAtoms(atoms_node,delete_atoms)
+				if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
+					if not isInAtom(proposition.formula,atom):
+						atoms_node[index_atom].append(proposition)
+				else:
+					delete_atoms.append(index_atom)
+				index_atom +=1
+			atoms_node = deleteAtoms(atoms_node,delete_atoms)
+		model_checking_atoms[tcc_node] = atoms_node
+	return model_checking_atoms
 
 
+model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
 
-for atom in atoms_node:
-	for formula in atom:
-		print formula.formula, " | ",
-	print "\n"
+
+for tcc_node in model_checking_atoms.keys():
+	print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
+
+	for atom in model_checking_atoms.get(tcc_node):
+		for formula in atom:
+			print formula.formula, " | ",
+		print "\n"
