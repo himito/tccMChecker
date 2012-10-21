@@ -11,6 +11,7 @@
 # Formula
 class Formula:
 	propositions = ["in=true", "x=2", "x=1"]
+	proposition_rules = {"x=2" : {"~":"x=1"}, "x=1" : {"~":"x=2"}}
 	operators = ["o", "<>", "[]", "v", "^", "~"]
 	formula = {}
 	
@@ -19,6 +20,9 @@ class Formula:
 			self.formula = {"": data}
 		else:
 			self.formula = data
+	
+	def getPropositionConsistent(self):
+		return self.proposition_rules.get(self.getValues())
 		
 	def getFormula(self):
 		return self.formula

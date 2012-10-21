@@ -2,12 +2,12 @@
 from formula import Formula
 from closure import getClosure
 
-tcc_structure = {	1: {"store": [{"":"in=true"}], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					2: {"store": [{"": "x=2"},{"": "in=true"}], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					3: {"store": [{"": "x=2"},{"~": "in=true"}], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					4: {"store": [{"~": "in=true"}], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					5: {"store": [{"": "x=1"},{"": "in=true"}], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					6: {"store": [{"": "x=1"},{"~": "in=true"}], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]}
+tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
+					2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
+					3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
+					4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
+					5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
+					6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]}
 }
 
 
@@ -105,7 +105,9 @@ def isInAtom(formula, atom):
 			return True
 	return False
 
+
 def isConsistent(formula, atom):
+	rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})}
 	# print formula.formula
 	if not isInAtom(formula.getNegation().formula, atom):
 		if formula.getConnective() == "<>": # <> rules
@@ -130,16 +132,52 @@ def isConsistent(formula, atom):
 atoms = getAllAtoms(basicFormulas, noBasicFormulas)
 
 
-print "Atoms: ", len(atoms)
-for atom in atoms:
+# print "Atoms: ", len(atoms)
+# for atom in atoms:
+# 	for formula in atom:
+# 		print formula.formula, " | ",
+# 	print "\n"
+
+######################################## Atoms  for tcc nodes ########################################
+
+def deleteAtoms(atoms, index_list):
+	result = []
+	index = 0
+	while index < len(atoms):
+		if index in index_list:
+			result.insert(0,atoms[index])
+		else:
+			result.append(atoms[index])
+		index +=1
+	return result[len(index_list):]
+
+def propositionConsistent(formula, atom):
+	if formula.isProposition() and (formula.getValues() in formula.proposition_rules.keys()):
+		if isConsistent(Formula(formula.getPropositionConsistent()), atom):
+			return True
+	return False
+
+tcc_node = 6
+atoms_node = atoms
+propositions = tcc_structure.get(tcc_node).get("store")
+print "Atoms State", tcc_node
+for proposition in propositions: # Propositions as formulas
+	index_atom = 0
+	delete_atoms = []
+	while index_atom < len(atoms_node):
+		atom = atoms_node[index_atom]
+		
+		if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
+			if not isInAtom(proposition,atom):
+				atoms_node[index_atom].append(proposition)
+		else:
+			delete_atoms.append(index_atom)
+		index_atom +=1
+	atoms_node = deleteAtoms(atoms_node,delete_atoms)
+
+
+
+for atom in atoms_node:
 	for formula in atom:
 		print formula.formula, " | ",
 	print "\n"
-
-
-
-# tcc_node = 1
-# atom = []
-# propositions = tcc_structure.get(tcc_node).get("store")
-# for proposition in propositions: # Propositions as formulas
-# 	atom.append(Formula(proposition))
