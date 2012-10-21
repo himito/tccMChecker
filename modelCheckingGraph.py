@@ -1,29 +1,5 @@
 # -*- coding: utf-8 -*-
 from formula import Formula
-from closure import getClosure
-
-tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]}
-}
-
-
-######################################## Formula ########################################
-phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
-print "Formula: "
-print phi.formula
-
-######################################## Closure ########################################
-closure = []
-getClosure(phi,closure)
-
-print "Clausura: ", len(closure)
-for formula in closure:
-	print formula.formula
-
 
 ######################################## Atoms ########################################
 def getBasicFormulas(closure):
@@ -83,22 +59,6 @@ def getAllAtoms(basicFormulas, noBasicFormulas):
 	
 	return atoms
 
-
-# Basic Formulas
-basicFormulas = getBasicFormulas(closure)
-print "Basic Formulas"
-for formula in basicFormulas:
-	print formula.formula
-
-# No Basic Formulas
-noBasicFormulas = getNoBasicFormulas(closure)
-print "Nueva closure:"
-for formula in noBasicFormulas:
-	print formula.formula
-	
-
-# All Atoms
-
 def isInAtom(formula, atom):
 	for formulaAtom in atom:
 		if formulaAtom.formula == formula:
@@ -129,7 +89,6 @@ def isConsistent(formula, atom):
 				return True
 	return False
 
-atoms = getAllAtoms(basicFormulas, noBasicFormulas)
 
 
 ######################################## Atoms  for tcc nodes ########################################
@@ -183,17 +142,6 @@ def getModelCheckingAtoms(tcc_structure, atoms):
 		model_checking_atoms[tcc_node] = list2dict(atoms_node,getTotalNodes(model_checking_atoms) + 1)
 	return model_checking_atoms
 	
-model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
-
-for tcc_node in model_checking_atoms.keys():
-	print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
-	tcc_atoms = model_checking_atoms.get(tcc_node)
-	for atom_index in tcc_atoms.keys():
-		print "Atom ", atom_index
-		for formula in tcc_atoms.get(atom_index):
-			print formula.formula, " | ",
-		print "\n"
-
 ######################################## Model Checking Graph ########################################
 
 def isNextState(nextFormulas,nextAtom):
@@ -221,7 +169,6 @@ def getModelCheckingGraph(tcc_structure, model_checking_atoms):
 			model_checking_graph[index_n1] = next_nodes
 	return model_checking_graph
 
-print getModelCheckingGraph(tcc_structure, model_checking_atoms)
 
 
 
