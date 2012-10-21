@@ -33,6 +33,14 @@ def getBasicFormulas(closure):
 			basicFormulas.append(formula)
 	return basicFormulas
 
+def getNoBasicFormulas(closure):
+	result = []
+	for formula in closure:
+		if formula.getConnective() != "~" and formula.getConnective() != "o" and not formula.isProposition():
+			result.append(formula)
+	return result
+	
+
 def searchFormulas(formulas, connective):
 	result = []
 	for formula in formulas:
@@ -40,7 +48,7 @@ def searchFormulas(formulas, connective):
 			result.append(formula)
 	return result
 
-def getAllAtoms(basicFormulas):
+def getAllAtoms(basicFormulas, noBasicFormulas):
 	num_atoms = 2**len(basicFormulas)
 	atoms =  [ [] for i in range(num_atoms) ]
 
@@ -66,6 +74,11 @@ def getAllAtoms(basicFormulas):
 			if formula not in atom:
 				atom.append(Formula({"o":{"~": formula.getValues()}}))
 	
+	for formula in noBasicFormulas:
+		for atom in atoms:
+			if isConsistent(formula, atom):
+				atom.append(formula)
+	
 	return atoms
 
 
@@ -75,24 +88,51 @@ print "Basic Formulas"
 for formula in basicFormulas:
 	print formula.formula
 
+# No Basic Formulas
+noBasicFormulas = getNoBasicFormulas(closure)
+print "Nueva closure:"
+for formula in noBasicFormulas:
+	print formula.formula
+	
 
 # All Atoms
-atoms = getAllAtoms(basicFormulas)
+
+def isInAtom(formula, atom):
+	for formulaAtom in atom:
+		if formulaAtom.formula == formula:
+			return True
+	return False
+
+def isConsistent(formula, atom):
+	# print formula.formula
+	if not isInAtom(formula.getNegation().formula, atom):
+		if formula.getConnective() == "<>": # <> rules
+			if isInAtom({"o": formula.formula},atom) or isConsistent(Formula(formula.getValues()), atom):
+				return True
+		elif formula.getConnective() == "[]": # [] rules
+			if isInAtom({"o": formula.formula},atom) and isConsistent(Formula(formula.getValues()), atom):
+				return True
+		elif formula.getConnective() == "^": # ^ rules
+			subformulas = formula.getSubFormulas()
+			if isConsistent(subformulas[0], atom) and isConsistent(subformulas[1], atom):
+				return True
+		elif formula.getConnective() == "v": # v rules
+			subformulas = formula.getSubFormulas()
+			if isConsistent(subformulas[0], atom) or isConsistent(subformulas[1], atom):
+				return True
+		elif formula.isProposition() or formula.getConnective() == "o" or formula.isNegativeNext():
+			if isInAtom(formula.formula, atom):
+				return True
+	return False
+
+atoms = getAllAtoms(basicFormulas, noBasicFormulas)
+
+
 print "Atoms: ", len(atoms)
 for atom in atoms:
 	for formula in atom:
 		print formula.formula, " | ",
 	print "\n"
-
-
-print "Nueva closure:"
-
-for formula in closure:
-	if formula.getConnective() != "~" and formula.getConnective() != "o" and not formula.isProposition():
-		print formula.formula	
-	
-	
-
 
 
 

@@ -53,6 +53,12 @@ class Formula:
 			return self.formula.values()[0] in self.propositions
 		return False
 		
+	def isNegativeNext(self):
+		if self.getConnective() == "~" and type(self.getValues()) != str and self.getValues().keys()[0] == "o":
+			return  True
+		else:
+			return False
+		
 	def isBasic(self):
 		if self.getConnective() != "~" and (self.isProposition() or self.getConnective() == "o"):
 			if self.getConnective() == "o" and type(self.getValues()) != str and self.getValues().keys()[0] == "~":
