@@ -132,12 +132,6 @@ def isConsistent(formula, atom):
 atoms = getAllAtoms(basicFormulas, noBasicFormulas)
 
 
-# print "Atoms: ", len(atoms)
-# for atom in atoms:
-# 	for formula in atom:
-# 		print formula.formula, " | ",
-# 	print "\n"
-
 ######################################## Atoms  for tcc nodes ########################################
 
 def deleteAtoms(atoms, index_list):
@@ -159,7 +153,7 @@ def propositionConsistent(formula, atom):
 def list2dict(lists):
 	result = {}
 	for index, element in enumerate(lists):
-	    result[index] = element
+	    result[index+1] = element
 	return result
 	
 def getModelCheckingAtoms(tcc_structure, atoms):
@@ -193,3 +187,40 @@ for tcc_node in model_checking_atoms.keys():
 		for formula in tcc_atoms.get(atom_index):
 			print formula.formula, " | ",
 		print "\n"
+
+######################################## Model Checking Graph ########################################
+
+def isNextState(nextFormulas,nextAtom):
+	for formula in nextFormulas:
+		next = Formula(formula.getValues())
+		if not isInAtom(next.formula, nextAtom): 
+			return False
+	return True
+	
+tcc_node = 6
+atoms_tcc_node = model_checking_atoms.get(tcc_node)
+for index_n1 in atoms_tcc_node.keys():
+	atom_n1  = atoms_tcc_node.get(index_n1)
+	nextFormulas = searchFormulas(atom_n1,"o")
+	print "next Formulas"
+	for formula in nextFormulas:
+		print formula.formula
+	for next_tcc_node in tcc_structure[tcc_node].get("edges"):
+		atoms_next_tcc_node = model_checking_atoms.get(next_tcc_node)
+		for index_n2 in atoms_next_tcc_node.keys():
+			atom_n2 = atoms_next_tcc_node.get(index_n2)
+			# for formula in atom_n2:
+			# 	print formula.formula, "|"
+			# print isNextState(nextFormulas, atom_n2)
+			if isNextState(nextFormulas, atom_n2):
+				print "tcc state: ", tcc_node, "(", index_n1, ") -> ", "next tcc state", next_tcc_node, "(", index_n2, ")"
+
+
+
+
+
+
+
+
+
+
