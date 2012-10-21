@@ -156,7 +156,11 @@ def propositionConsistent(formula, atom):
 		if isConsistent(Formula(formula.getPropositionConsistent()), atom):
 			return True
 	return False
-	
+def list2dict(lists):
+	result = {}
+	for index, element in enumerate(lists):
+	    result[index] = element
+	return result
 	
 def getModelCheckingAtoms(tcc_structure, atoms):
 	model_checking_atoms = {}
@@ -176,17 +180,16 @@ def getModelCheckingAtoms(tcc_structure, atoms):
 					delete_atoms.append(index_atom)
 				index_atom +=1
 			atoms_node = deleteAtoms(atoms_node,delete_atoms)
-		model_checking_atoms[tcc_node] = atoms_node
+		model_checking_atoms[tcc_node] = list2dict(atoms_node)
 	return model_checking_atoms
-
-
+	
 model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
-
 
 for tcc_node in model_checking_atoms.keys():
 	print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
-
-	for atom in model_checking_atoms.get(tcc_node):
-		for formula in atom:
+	tcc_atoms = model_checking_atoms.get(tcc_node)
+	for atom_index in tcc_atoms.keys():
+		print "Atom ", atom_index
+		for formula in tcc_atoms.get(atom_index):
 			print formula.formula, " | ",
 		print "\n"
