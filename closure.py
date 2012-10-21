@@ -1,54 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Codification:
-# <> : Sometimes
-# [] : Always
-# ~ : Negation
-# v : or
-# o : next
-# ^ : and
+from formula import Formula
 
-
-class Formula:
-	prepositions = ["in=true", "x=2", "x=1"]
-	operators = ["o", "<>", "[]", "v", "^", "~"]
-	formula = {}
-	
-	def __init__(self, data):
-		if (type(data) == str):
-			self.formula = {"": data}
-		else:
-			self.formula = data
-		
-	def getFormula(self):
-		return self.formula
-	
-	def getValues(self):
-		return self.formula.values()[0]
-	
-	def getSubFormulas(self):
-		subformulas = []
-		newFormula = self.getValues()
-		connectives = newFormula.keys()
-		for connective in connectives:
-			subformulas.append(Formula({connective : newFormula.get(connective)}))
-		return subformulas
-	
-	def getConnective(self):
-		return self.formula.keys()[0]
-	
-	def isPreposition(self):
-		if len(self.formula) == 1 and (self.getConnective() not in self.operators[:-1]):
-			return self.formula.values()[0] in self.prepositions
-		return False
-	
-	def isNegativeFormula(self):
-		subformula = Formula(self.getValues())
-		if (self.getConnective() == "~" and (subformula.getConnective() in self.operators[:-1])):
-			return True
-		return False
-
-
+# Closure
 def getClosure(formula, closure):
 
 	if formula.isNegativeFormula():
@@ -96,21 +50,27 @@ def getClosure(formula, closure):
 		closure.append(Formula({"o": {"~": {"[]": subformula}}})) # o~[] phi
 		getClosure(Formula(formula.getValues()),closure)
 
-closure = []
-phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
-# phi = Formula({"^":{"":"in=true","~":{"o":"x=2"}}})
-# phi = Formula({"":"in=true"})
-# phi = Formula({"~":{"o":"x=2"}})
-# phi = Formula({"o":"x=2"})
-# phi = Formula({"":"x=2"})
 
-print "Formula: "
-print phi.formula
 
-getClosure(phi,closure)
-print "Clausura: ", len(closure)
-for formula in closure:
-	print formula.formula
+
+
+###################################### Execution ###################################### 
+
+# closure = []
+# phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+# # phi = Formula({"^":{"":"in=true","~":{"o":"x=2"}}})
+# # phi = Formula({"":"in=true"})
+# # phi = Formula({"~":{"o":"x=2"}})
+# # phi = Formula({"o":"x=2"})
+# # phi = Formula({"":"x=2"})
+# 
+# print "Formula: "
+# print phi.formula
+# 
+# getClosure(phi,closure)
+# print "Clausura: ", len(closure)
+# for formula in closure:
+# 	print formula.formula
 
 
 
