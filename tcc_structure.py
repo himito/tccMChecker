@@ -78,6 +78,8 @@ def getAllAtoms(basicFormulas, noBasicFormulas):
 		for atom in atoms:
 			if isConsistent(formula, atom):
 				atom.append(formula)
+			else: 
+				atom.append(formula.getNegation())
 	
 	return atoms
 
