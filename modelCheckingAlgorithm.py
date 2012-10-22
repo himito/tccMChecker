@@ -74,7 +74,7 @@ def getInitialNodes(tcc_structure,model_checking_atoms):
 	return list(itertools.chain(*initial_nodes))
 		
 
-def getModelCheckingSubgraphs(scc_list,tcc_structure,model_checking_atoms,model_checking_graph):
+def getModelCheckingSCCSubgraphs(scc_list,tcc_structure,model_checking_atoms,model_checking_graph):
 	initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
 	model_checking_subgraphs=[]
 	for scc in scc_list :
@@ -92,9 +92,9 @@ def getModelCheckingSubgraphs(scc_list,tcc_structure,model_checking_atoms,model_
 	return model_checking_subgraphs
 
 
-model_checking_subgraphs = getModelCheckingSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
-print "Model Checking Subgraphs"
-print model_checking_subgraphs
+model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
+print "Model Checking SCC Subgraphs"
+print model_checking_scc_subgraphs
 
 
 
