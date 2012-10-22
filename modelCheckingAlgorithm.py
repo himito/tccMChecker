@@ -2,15 +2,16 @@ from formula import Formula
 from closure import getClosure
 from modelCheckingGraph import getBasicFormulas, getNoBasicFormulas, getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph
 from tarjan import tarjan
+import itertools
 
 ######################################## TCC Structure ########################################
 
-tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]},
-					5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3]},
-					6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6]}
+tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": True},
+					2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+					3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False},
+					4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": True},
+					5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+					6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False}
 }
 
 
@@ -57,10 +58,44 @@ for tcc_node in model_checking_atoms.keys():
 
 ####################################### Model Checking Graph ##########################################
 model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
+print "Model Checking Graph"
+print model_checking_graph
 
 ############################## Strongly Connected Components ##########################################
 strongly_connected_components = tarjan(model_checking_graph)
+print "Strongly Connected Components : "
 print strongly_connected_components
+
+def getInitialNodes(tcc_structure,model_checking_atoms):
+	initial_nodes = []
+	for node in tcc_structure.keys():
+		if tcc_structure.get(node).get("initial"):
+			initial_nodes.append(model_checking_atoms.get(node).keys())
+	return list(itertools.chain(*initial_nodes))
+		
+
+def getModelCheckingSubgraphs(scc_list,tcc_structure,model_checking_atoms,model_checking_graph):
+	initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
+	model_checking_subgraphs=[]
+	for scc in scc_list :
+		if len(scc) > 1:  # non-trivial
+			temp_graph = {}
+			for nodo in scc:
+				nodes =  list(set(model_checking_graph.get(nodo)).intersection(set(scc)))
+				if len(nodes) != 0:
+					temp_graph[nodo] = nodes
+			for nodo in initial_nodes:
+				nodes = list(set(model_checking_graph.get(nodo)).intersection(set(scc)))
+				if len(nodes) != 0:
+					temp_graph[nodo] = nodes
+			model_checking_subgraphs.append(temp_graph)
+	return model_checking_subgraphs
+
+
+model_checking_subgraphs = getModelCheckingSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
+print "Model Checking Subgraphs"
+print model_checking_subgraphs
+
 
 
 
