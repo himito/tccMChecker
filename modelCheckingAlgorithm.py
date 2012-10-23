@@ -1,8 +1,8 @@
 from formula import Formula
 from closure import getClosure
-from modelCheckingGraph import getBasicFormulas, getNoBasicFormulas, getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph
+from modelCheckingGraph import getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph, searchFormulas, isInAtom
+from searchingAlgorithm import getModelCheckingSCCSubgraphs, isSatisfied
 from tarjan import tarjan
-import itertools
 
 ######################################## TCC Structure ########################################
 
@@ -16,7 +16,7 @@ tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "tempora
 
 
 ######################################## Formula ########################################
-phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=1"}}}})
 print "Formula: "
 print phi.formula
 
@@ -29,20 +29,8 @@ for formula in closure:
 	print formula.formula
 	
 ####################################### Atoms ##########################################
-# Basic Formulas
-basicFormulas = getBasicFormulas(closure)
-print "Basic Formulas"
-for formula in basicFormulas:
-	print formula.formula
-
-# No Basic Formulas
-noBasicFormulas = getNoBasicFormulas(closure)
-print "Nueva closure:"
-for formula in noBasicFormulas:
-	print formula.formula
-
 # All atoms	
-atoms = getAllAtoms(basicFormulas, noBasicFormulas)
+atoms = getAllAtoms(closure)
 
 # Modecl Checking Atoms
 model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
@@ -66,41 +54,13 @@ strongly_connected_components = tarjan(model_checking_graph)
 print "Strongly Connected Components : "
 print strongly_connected_components
 
-def getInitialNodes(tcc_structure,model_checking_atoms):
-	initial_nodes = []
-	for node in tcc_structure.keys():
-		if tcc_structure.get(node).get("initial"):
-			initial_nodes.append(model_checking_atoms.get(node).keys())
-	return list(itertools.chain(*initial_nodes))
-		
-
-def getModelCheckingSCCSubgraphs(scc_list,tcc_structure,model_checking_atoms,model_checking_graph):
-	initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
-	model_checking_subgraphs=[]
-	for scc in scc_list :
-		if len(scc) > 1:  # non-trivial
-			temp_graph = {}
-			for nodo in scc:
-				nodes =  list(set(model_checking_graph.get(nodo)).intersection(set(scc)))
-				if len(nodes) != 0:
-					temp_graph[nodo] = nodes
-			for nodo in initial_nodes:
-				nodes = list(set(model_checking_graph.get(nodo)).intersection(set(scc)))
-				if len(nodes) != 0:
-					temp_graph[nodo] = nodes
-			model_checking_subgraphs.append(temp_graph)
-	return model_checking_subgraphs
-
-
 model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
-print "Model Checking SCC Subgraphs"
+print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
 print model_checking_scc_subgraphs
 
 
-
-
-
-
-
+############################## Result ##########################################
+result = isSatisfied(phi, tcc_structure, model_checking_atoms, model_checking_scc_subgraphs)
+print "Model Satisfy Formula: ", not result
 
 

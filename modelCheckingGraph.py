@@ -24,7 +24,9 @@ def searchFormulas(formulas, connective):
 			result.append(formula)
 	return result
 
-def getAllAtoms(basicFormulas, noBasicFormulas):
+def getAllAtoms(closure):
+	basicFormulas = getBasicFormulas(closure)
+	noBasicFormulas = getNoBasicFormulas(closure)
 	num_atoms = 2**len(basicFormulas)
 	atoms =  [ [] for i in range(num_atoms) ]
 
@@ -61,6 +63,7 @@ def getAllAtoms(basicFormulas, noBasicFormulas):
 
 def isInAtom(formula, atom):
 	for formulaAtom in atom:
+		# print "comparar:" , formula , " con: ", formulaAtom.formula
 		if formulaAtom.formula == formula:
 			return True
 	return False
