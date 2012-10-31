@@ -3,6 +3,7 @@ from closure import getClosure
 from modelCheckingGraph import getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph, searchFormulas, isInAtom
 from searchingAlgorithm import getModelCheckingSCCSubgraphs, isSatisfied
 from tarjan import tarjan
+from PrintGraphs import parserGraphviz
 
 ######################################## TCC Structure ########################################
 
@@ -16,7 +17,7 @@ tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "tempora
 
 
 ######################################## Formula ########################################
-phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=1"}}}})
+phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
 print "Formula: "
 print phi.formula
 
@@ -61,6 +62,9 @@ print model_checking_scc_subgraphs
 
 ############################## Result ##########################################
 result = isSatisfied(phi, tcc_structure, model_checking_atoms, model_checking_scc_subgraphs)
-print "Model Satisfy Formula: ", not result
+print "Model Satisfies Formula: ", not result
+
+############################# Output ############################################
+# parserGraphviz(model_checking_scc_subgraphs[1])
 
 
