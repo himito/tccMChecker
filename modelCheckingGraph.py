@@ -1,8 +1,48 @@
-# -*- coding: utf-8 -*-
+# Filename: modelCheckingGraph.py
+
+"""
+This module contains the necessary functions to generate a model checking graph.
+"""
+
+__author__ = "Jaime E. Arias Almeida"
+__license__ = "beerware"
+__version__ = "1.0"
+__email__ = "jearias@javerianacali.edu.co"
+__docformat__ = 'reStructuredText'
+
 from formula import Formula
 
 ######################################## Atoms ########################################
 def getBasicFormulas(closure):
+	"""
+		Returns the basic formulas (i.e. propositions or formulas with :math:`\circ` as main connective) of the closure.
+
+		:param closure: Closure of a formula.
+		:type closure: List of :py:class:`~formula.Formula`
+
+		:returns: List of basic formulas of the closure.
+		:rtype: List of :py:class:`~formula.Formula`.
+
+		:Example:
+
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> basicFormulas = getBasicFormulas(closure)
+		>>> for formula in basicFormulas:
+		...     print formula.getFormula()
+		... 
+		{'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}
+		{'': 'in=true'}
+		{'o': 'x=2'}
+		{'': 'x=2'}
+
+		.. seealso::
+			:py:func:`closure.getClosure`
+
+	"""
 	basicFormulas = []
 	for formula in closure:
 		if formula.isBasic():
@@ -10,6 +50,33 @@ def getBasicFormulas(closure):
 	return basicFormulas
 
 def getNoBasicFormulas(closure):
+	"""
+		Returns the formulas of the closure that are not basic formulas.
+		
+		:param closure: Closure of a formula.
+		:type closure: List of :py:class:`~formula.Formula`
+		
+		:returns: List of formulas of the closure that are not basic formulas.
+		:rtype: List of :py:class:`~formula.Formula`.
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> noBasicFormulas = getNoBasicFormulas(closure)
+		>>> for formula in noBasicFormulas:
+		...     print formula.getFormula()
+		... 
+		{'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		{'^': {'': 'in=true', '~': {'o': 'x=2'}}}
+		
+		.. seealso::
+			:py:func:`closure.getClosure`
+		
+	"""
 	result = []
 	for formula in closure:
 		if formula.getConnective() != "~" and formula.getConnective() != "o" and not formula.isProposition():
@@ -18,6 +85,30 @@ def getNoBasicFormulas(closure):
 	
 
 def searchFormulas(formulas, connective):
+	"""
+		Returns the formulas that have a particular main connective.
+		
+		:param formulas: List of formulas.
+		:type formulas: List of :py:class:`~formula.Formula`
+		
+		:param connective: The main connective.
+		:type connective: String
+		
+		:returns: List containing the formulas that have the main connective.
+		:rtype: List
+		
+		:Example:
+		
+		>>> from modelCheckingGraph import *
+		>>> list = [Formula({'o': 'x=2'}), Formula({'~': {'o': 'x=2'}}), Formula({'o': {'~': 'x=2'}})]
+		>>> result = searchFormulas(list,'o')
+		>>> for formula in result:
+		...     print formula.getFormula()
+		... 
+		{'o': 'x=2'}
+		{'o': {'~': 'x=2'}}
+		
+	"""
 	result = []
 	for formula in formulas:
 		if formula.getConnective() == connective:
@@ -25,6 +116,53 @@ def searchFormulas(formulas, connective):
 	return result
 
 def getAllAtoms(closure):
+	"""
+		Returns all possible atoms of the closure.
+		
+		:param closure: Closure of a formula.
+		:type closure: List of :py:class:`~formula.Formula`
+		
+		:returns: List of all atoms of the closure.
+		:rtype: List of lists of :py:class:`~formula.Formula`.
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> for index, atom in enumerate(atoms):
+		...     print "Atom " + str(index) + ":"
+		...     for formula in atom:
+		...             print formula.getFormula()
+		... 
+		Atom 0:
+		{'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}
+		{'': 'in=true'}
+		{'o': 'x=2'}
+		{'': 'x=2'}
+		{'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		{'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		Atom 1:
+		{'~': {'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}}
+		{'': 'in=true'}
+		{'o': 'x=2'}
+		{'': 'x=2'}
+		{'o': {'~': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}}
+		{'~': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}
+		{'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		...
+		
+		.. seealso::
+			:py:func:`closure.getClosure`
+		
+		.. note::
+		
+			This function is based on the algorithm shown in [MP95]_.
+		
+	"""
 	basicFormulas = getBasicFormulas(closure)
 	noBasicFormulas = getNoBasicFormulas(closure)
 	num_atoms = 2**len(basicFormulas)
@@ -62,22 +200,73 @@ def getAllAtoms(closure):
 	return atoms
 
 def isInAtom(formula, atom):
+	"""
+		Checks if a formula is in an atom.
+		
+		:param formula: Structure representing a formula.
+		:type formula: Dictionary
+		
+		:param atom: List of consistent formulas representing an atom of the closure.
+		:type atom: List of :py:class:`~formula.Formula`.
+		
+		:returns: ``True`` if the formula is in atom or ``False`` otherwise.
+		:rtype: Boolean
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> isInAtom({'': 'in=true'}, atoms[0])
+		True
+	"""
 	for formulaAtom in atom:
 		# print "comparar:" , formula , " con: ", formulaAtom.formula
-		if formulaAtom.formula == formula:
+		if formulaAtom.getFormula() == formula:
 			return True
 	return False
 
 
 def isConsistent(formula, atom):
+	"""
+		Checks if a formula is consistent with the set of formulas in an atom.
+		
+		:param formula: Formula 
+		:type formula: :py:class:`~formula.Formula`
+		
+		:param atom: List of consistent formulas representing an atom of the closure.
+		:type atom: List of :py:class:`~formula.Formula`.
+		
+		:returns: ``True`` if the formula is consistent with the set of formulas in the atom or ``False`` otherwise.
+		:rtype: Boolean
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> isConsistent(Formula({'': 'x=1'}), atoms[0])
+		False
+		
+		
+		.. note::
+		
+			This function is based on the conditions shown in the defintion 6.1 of the thesis document.
+	"""
 	rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})}
 	# print formula.formula
-	if not isInAtom(formula.getNegation().formula, atom):
+	if not isInAtom(formula.getNegation().getFormula(), atom):
 		if formula.getConnective() == "<>": # <> rules
-			if isInAtom({"o": formula.formula},atom) or isConsistent(Formula(formula.getValues()), atom):
+			if isInAtom({"o": formula.getFormula()},atom) or isConsistent(Formula(formula.getValues()), atom):
 				return True
 		elif formula.getConnective() == "[]": # [] rules
-			if isInAtom({"o": formula.formula},atom) and isConsistent(Formula(formula.getValues()), atom):
+			if isInAtom({"o": formula.getFormula()},atom) and isConsistent(Formula(formula.getValues()), atom):
 				return True
 		elif formula.getConnective() == "^": # ^ rules
 			subformulas = formula.getSubFormulas()
@@ -88,7 +277,7 @@ def isConsistent(formula, atom):
 			if isConsistent(subformulas[0], atom) or isConsistent(subformulas[1], atom):
 				return True
 		elif formula.isProposition() or formula.getConnective() == "o" or formula.isNegativeNext():
-			if isInAtom(formula.formula, atom):
+			if isInAtom(formula.getFormula(), atom):
 				return True
 	return False
 
@@ -96,7 +285,7 @@ def isConsistent(formula, atom):
 
 ######################################## Atoms  for tcc nodes ########################################
 
-def deleteAtoms(atoms, index_list):
+def __deleteAtoms(atoms, index_list):
 	result = []
 	index = 0
 	while index < len(atoms):
@@ -108,17 +297,18 @@ def deleteAtoms(atoms, index_list):
 	return result[len(index_list):]
 
 def propositionConsistent(formula, atom):
-	if formula.isProposition() and (formula.getValues() in formula.proposition_rules.keys()):
-		if isConsistent(Formula(formula.getPropositionConsistent()), atom):
+	if formula.isProposition() and (formula.getValues() in formula.getPropositionRules().keys()):
+		if isConsistent(Formula(formula.getConsistentPropositions()), atom):
 			return True
 	return False
-def list2dict(lists, offset):
+	
+def __list2dict(lists, offset):
 	result = {}
 	for index, element in enumerate(lists):
 	    result[index+offset] = element
 	return result
 
-def getTotalNodes(graph):
+def __getTotalNodes(graph):
 	total = 0
 	for index_node in graph.keys():
 		total = total + len(graph.get(index_node))
@@ -136,13 +326,13 @@ def getModelCheckingAtoms(tcc_structure, atoms):
 				atom = atoms_node[index_atom]
 		
 				if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
-					if not isInAtom(proposition.formula,atom):
+					if not isInAtom(proposition.getFormula(),atom):
 						atoms_node[index_atom].append(proposition)
 				else:
 					delete_atoms.append(index_atom)
 				index_atom +=1
-			atoms_node = deleteAtoms(atoms_node,delete_atoms)
-		model_checking_atoms[tcc_node] = list2dict(atoms_node,getTotalNodes(model_checking_atoms) + 1)
+			atoms_node = __deleteAtoms(atoms_node,delete_atoms)
+		model_checking_atoms[tcc_node] = __list2dict(atoms_node,__getTotalNodes(model_checking_atoms) + 1)
 	return model_checking_atoms
 	
 ######################################## Model Checking Graph ########################################
@@ -150,7 +340,7 @@ def getModelCheckingAtoms(tcc_structure, atoms):
 def isNextState(nextFormulas,nextAtom):
 	for formula in nextFormulas:
 		next = Formula(formula.getValues())
-		if not isInAtom(next.formula, nextAtom): 
+		if not isInAtom(next.getFormula(), nextAtom): 
 			return False
 	return True
 

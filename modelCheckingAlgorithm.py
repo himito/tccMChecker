@@ -19,7 +19,7 @@ tcc_structure = {	1: {"store": [Formula({"":"in=true"})], "normal": [], "tempora
 ######################################## Formula ########################################
 phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
 print "Formula: "
-print phi.formula
+print phi.getFormula()
 
 ######################################## Closure ########################################
 closure = []
@@ -27,7 +27,7 @@ getClosure(phi,closure)
 
 print "Clausura: ", len(closure)
 for formula in closure:
-	print formula.formula
+	print formula.getFormula()
 	
 ####################################### Atoms ##########################################
 # All atoms	
@@ -42,7 +42,7 @@ for tcc_node in model_checking_atoms.keys():
 	for atom_index in tcc_atoms.keys():
 		print "Atom ", atom_index
 		for formula in tcc_atoms.get(atom_index):
-			print formula.formula, " | ",
+			print formula.getFormula(), " | ",
 		print "\n"
 
 ####################################### Model Checking Graph ##########################################

@@ -44,7 +44,7 @@ def isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms):
 				new_formula = Formula(diamond_formula.getValues())
 
 				print "search de node:", node,
-				print new_formula.formula
+				print new_formula.getFormula()
 
 				found = False
 				for node_scc in scc_graph.keys():
@@ -56,8 +56,8 @@ def isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms):
 						# for formula in formulas_scc:
 						# 	print formula.formula, "|"
 
-						print "Encontrado:", isInAtom(new_formula.formula, formulas_scc)
-						if isInAtom(new_formula.formula, formulas_scc):
+						print "Encontrado:", isInAtom(new_formula.getFormula(), formulas_scc)
+						if isInAtom(new_formula.getFormula(), formulas_scc):
 							found = True
 							break
 				if not found:
@@ -66,15 +66,15 @@ def isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms):
 
 
 def initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula):
-	print "Formula:", formula.formula
+	print "Formula:", formula.getFormula()
 	for node in scc_graph.keys():
 		if node in initial_nodes:
 			formulas = getFormulas(node,model_checking_atoms)
 			print "node:", node
-			print "Entails:", isInAtom(formula.formula, formulas)
+			print "Entails:", isInAtom(formula.getFormula(), formulas)
 			# for formula_1 in formulas:
 			# 	print formula_1.formula, "|"
-			if isInAtom(formula.formula, formulas):
+			if isInAtom(formula.getFormula(), formulas):
 				return True
 	return False
 

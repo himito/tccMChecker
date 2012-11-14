@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Model Checking Graph &mdash; Model Checking for tcc Calculus 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Model Checking for tcc Calculus 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Closure" href="closure.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="closure.html" title="Closure"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Model Checking for tcc Calculus 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="closure.html"
+                        title="previous chapter">Closure</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/modelCheckingGraph.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-modelCheckingGraph">
+<span id="model-checking-graph"></span><h1>Model Checking Graph<a class="headerlink" href="#module-modelCheckingGraph" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the necessary functions to generate a model checking graph.</p>
+<dl class="function">
+<dt id="modelCheckingGraph.getAllAtoms">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getAllAtoms</tt><big>(</big><em>closure</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getAllAtoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all possible atoms of the closure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>closure</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Closure of a formula.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of all atoms of the closure.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List of lists of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;Atom &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">atom</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">Atom 0:</span>
+<span class="go">{&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="go">{&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="go">{&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="go">{&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="go">Atom 1:</span>
+<span class="go">{&#39;~&#39;: {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}</span>
+<span class="go">{&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="go">{&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;o&#39;: {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}</span>
+<span class="go">{&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="go">{&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is based on the algorithm shown in <a class="reference internal" href="#mp95">[MP95]</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.getBasicFormulas">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getBasicFormulas</tt><big>(</big><em>closure</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getBasicFormulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the basic formulas (i.e. propositions or formulas with <img class="math" src="_images/math/7f3b4ea3b8abe9ced6095c7d75f207a1127ee843.png" alt="\circ"/> as main connective) of the closure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>closure</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Closure of a formula.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of basic formulas of the closure.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basicFormulas</span> <span class="o">=</span> <span class="n">getBasicFormulas</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">basicFormulas</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">{&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="go">{&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="go">{&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&#39;: &#39;x=2&#39;}</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.getModelCheckingAtoms">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getModelCheckingAtoms</tt><big>(</big><em>tcc_structure</em>, <em>atoms</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getModelCheckingAtoms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.getModelCheckingGraph">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getModelCheckingGraph</tt><big>(</big><em>tcc_structure</em>, <em>model_checking_atoms</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getModelCheckingGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.getNoBasicFormulas">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getNoBasicFormulas</tt><big>(</big><em>closure</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getNoBasicFormulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the formulas of the closure that are not basic formulas.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>closure</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Closure of a formula.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of formulas of the closure that are not basic formulas.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">noBasicFormulas</span> <span class="o">=</span> <span class="n">getNoBasicFormulas</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">noBasicFormulas</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">{&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="go">{&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.isConsistent">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">isConsistent</tt><big>(</big><em>formula</em>, <em>atom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.isConsistent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a formula is consistent with the set of formulas in an atom.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formula</strong> (<a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Formula</li>
+<li><strong>atom</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>.) &#8211; List of consistent formulas representing an atom of the closure.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><tt class="docutils literal"><span class="pre">True</span></tt> if the formula is consistent with the set of formulas in the atom or <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Boolean</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">isConsistent</span><span class="p">(</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;x=1&#39;</span><span class="p">}),</span> <span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is based on the conditions shown in the defintion 6.1 of the thesis document.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.isInAtom">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">isInAtom</tt><big>(</big><em>formula</em>, <em>atom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.isInAtom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a formula is in an atom.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formula</strong> (<em>Dictionary</em>) &#8211; Structure representing a formula.</li>
+<li><strong>atom</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>.) &#8211; List of consistent formulas representing an atom of the closure.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><tt class="docutils literal"><span class="pre">True</span></tt> if the formula is in atom or <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Boolean</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">isInAtom</span><span class="p">({</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">},</span> <span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.isNextState">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">isNextState</tt><big>(</big><em>nextFormulas</em>, <em>nextAtom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.isNextState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.propositionConsistent">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">propositionConsistent</tt><big>(</big><em>formula</em>, <em>atom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.propositionConsistent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.searchFormulas">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">searchFormulas</tt><big>(</big><em>formulas</em>, <em>connective</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.searchFormulas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the formulas that have a particular main connective.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formulas</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; List of formulas.</li>
+<li><strong>connective</strong> (<em>String</em>) &#8211; The main connective.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing the formulas that have the main connective.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">List</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}),</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}}),</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}})]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">searchFormulas</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="s">&#39;o&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">{&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;o&#39;: {&#39;~&#39;: &#39;x=2&#39;}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<table class="docutils citation" frame="void" id="mp95" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[MP95]</a></td><td>Zohar Manna and Amir Pnueli. Temporal Verification of Reactive Systems: Safety. Springer-Verlag New York, Inc., 1995.</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="closure.html" title="Closure"
+             >previous</a> |</li>
+        <li><a href="index.html">Model Checking for tcc Calculus 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jaime E. Arias Almeida.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
