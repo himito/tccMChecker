@@ -3,7 +3,7 @@ from closure import getClosure
 from modelCheckingGraph import getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph, searchFormulas, isInAtom
 from searchingAlgorithm import getModelCheckingSCCSubgraphs, isSatisfied
 from tarjan import tarjan
-from PrintGraphs import parserGraphviz
+from printGraphs import parserGraphviz
 
 ######################################## TCC Structure ########################################
 

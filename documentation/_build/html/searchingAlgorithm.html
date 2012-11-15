@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Searching Algorithm &mdash; Model Checking for tcc Calculus 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Model Checking for tcc Calculus 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Model Checking Graph" href="modelCheckingGraph.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modelCheckingGraph.html" title="Model Checking Graph"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Model Checking for tcc Calculus 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modelCheckingGraph.html"
+                        title="previous chapter">Model Checking Graph</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/searchingAlgorithm.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-searchingAlgorithm">
+<span id="searching-algorithm"></span><h1>Searching Algorithm<a class="headerlink" href="#module-searchingAlgorithm" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the necessary functions to check if a model checking graph satisfies a property.</p>
+<dl class="function">
+<dt id="searchingAlgorithm.getFormulas">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">getFormulas</tt><big>(</big><em>node</em>, <em>model_checking_atoms</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.getFormulas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="searchingAlgorithm.getInitialNodes">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">getInitialNodes</tt><big>(</big><em>tcc_structure</em>, <em>model_checking_atoms</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.getInitialNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="searchingAlgorithm.getModelCheckingSCCSubgraphs">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">getModelCheckingSCCSubgraphs</tt><big>(</big><em>scc_list</em>, <em>tcc_structure</em>, <em>model_checking_atoms</em>, <em>model_checking_graph</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.getModelCheckingSCCSubgraphs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="searchingAlgorithm.initialNodesEntailFormula">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">initialNodesEntailFormula</tt><big>(</big><em>scc_graph</em>, <em>initial_nodes</em>, <em>model_checking_atoms</em>, <em>formula</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.initialNodesEntailFormula" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="searchingAlgorithm.isSatisfied">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">isSatisfied</tt><big>(</big><em>formula</em>, <em>tcc_structure</em>, <em>model_checking_atoms</em>, <em>model_checking_scc_subgraphs</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.isSatisfied" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="searchingAlgorithm.isSelfFulfilling">
+<tt class="descclassname">searchingAlgorithm.</tt><tt class="descname">isSelfFulfilling</tt><big>(</big><em>scc_graph</em>, <em>initial_nodes</em>, <em>model_checking_atoms</em><big>)</big><a class="headerlink" href="#searchingAlgorithm.isSelfFulfilling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modelCheckingGraph.html" title="Model Checking Graph"
+             >previous</a> |</li>
+        <li><a href="index.html">Model Checking for tcc Calculus 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jaime E. Arias Almeida.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,3 +1,16 @@
+# Filename: searchingAlgorithm.py
+
+"""
+This module contains the necessary functions to check if a model checking graph satisfies a property.
+"""
+
+__author__ = "Jaime E. Arias Almeida"
+__license__ = "beerware"
+__version__ = "1.0"
+__email__ = "jearias@javerianacali.edu.co"
+__docformat__ = 'reStructuredText'
+
+
 import itertools
 from formula import Formula
 from modelCheckingGraph import searchFormulas, isInAtom

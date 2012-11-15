@@ -40,7 +40,7 @@ def getBasicFormulas(closure):
 		{'': 'x=2'}
 
 		.. seealso::
-			:py:func:`closure.getClosure`
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`
 
 	"""
 	basicFormulas = []
@@ -74,7 +74,7 @@ def getNoBasicFormulas(closure):
 		{'^': {'': 'in=true', '~': {'o': 'x=2'}}}
 		
 		.. seealso::
-			:py:func:`closure.getClosure`
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`
 		
 	"""
 	result = []
@@ -156,7 +156,7 @@ def getAllAtoms(closure):
 		...
 		
 		.. seealso::
-			:py:func:`closure.getClosure`
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`
 		
 		.. note::
 		
@@ -222,6 +222,9 @@ def isInAtom(formula, atom):
 		>>> atoms = getAllAtoms(closure)
 		>>> isInAtom({'': 'in=true'}, atoms[0])
 		True
+		
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
 	"""
 	for formulaAtom in atom:
 		# print "comparar:" , formula , " con: ", formulaAtom.formula
@@ -254,6 +257,8 @@ def isConsistent(formula, atom):
 		>>> isConsistent(Formula({'': 'x=1'}), atoms[0])
 		False
 		
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
 		
 		.. note::
 		
@@ -285,7 +290,36 @@ def isConsistent(formula, atom):
 
 ######################################## Atoms  for tcc nodes ########################################
 
-def __deleteAtoms(atoms, index_list):
+def deleteAtoms(atoms, index_list):
+	"""
+		Removes atoms from a list of atoms.
+		
+		:param atoms: List of atoms.
+		:type atoms: List of lists
+		
+		:param index_list: Index list of the elements to be removed. 
+		:type index_list: List
+		
+		:returns: List of atoms with atoms removed.
+		:rtype: List.
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> len(atoms)
+		16
+		>>> newAtoms = deleteAtoms(atoms,[0,2,3,4,5,6,7,8,9,10,11,12,14,15])
+		>>> len(newAtoms)
+		2
+		
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
+	"""
 	result = []
 	index = 0
 	while index < len(atoms):
@@ -297,24 +331,150 @@ def __deleteAtoms(atoms, index_list):
 	return result[len(index_list):]
 
 def propositionConsistent(formula, atom):
+	"""
+		Checks if a proposition is consistent with the formulas of an atom.
+		
+		:param formula: Formula
+		:type formula: :py:class:`~formula.Formula`
+		
+		:param atom: Atom
+		:type atom: List of :py:class:`~formula.Formula`
+		
+		:returns: ``True`` if the proposition is consistent with the atom or ``False`` otherwise.
+		:rtype: Boolean.
+		
+		:Example:
+		
+		>>> from closure import *
+		>>> from modelCheckingGraph import *
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> proposition = Formula({"~":"x=2"})
+		>>> atom = atoms[0]
+		>>> for formula in atom:
+		...     print formula.getFormula()
+		... 
+		{'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}
+		{'': 'in=true'}
+		{'o': 'x=2'}
+		{'': 'x=2'}
+		{'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		{'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}
+		>>> propositionConsistent(proposition, atom)
+		False
+		
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
+		
+	"""
 	if formula.isProposition() and (formula.getValues() in formula.getPropositionRules().keys()):
 		if isConsistent(Formula(formula.getConsistentPropositions()), atom):
 			return True
 	return False
 	
-def __list2dict(lists, offset):
+def list2dict(lists, offset):
+	"""
+		Converts a list to a dictionary with ascending numbers as keys.
+		
+		:param lists: List with elements.
+		:type lists: List
+		
+		:param offset: Offset of numeration.
+		:type offset: Integer
+		
+		:returns: Dictionary with numbers as keys, and elements of the list as values. 
+		:rtype: Dictionary.
+		
+		:Example:
+		
+		>>> from modelCheckingGraph import *
+		>>> list = ["I", "Love", "Computer", "Science"]
+		>>> list2dict(list, 2)
+		{2: 'I', 3: 'Love', 4: 'Computer', 5: 'Science'}
+		 
+	"""
 	result = {}
 	for index, element in enumerate(lists):
 	    result[index+offset] = element
 	return result
 
-def __getTotalNodes(graph):
+def getTotalNodes(graph):
+	"""
+		Returns the total number of atoms.
+		
+		:param graph: Dictionary representing the atoms in each tcc state.
+		:type graph: Dictionary
+		
+		:returns: The total number of atoms.
+		:rtype: Integer
+		
+		:Example:
+		
+		>>> from modelCheckingGraph import *
+		>>>> graph = {1: [[Formula({'': 'in=true'}), Formula({'o': 'x=2'})],
+		... [Formula({'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}})]],
+		... 2: [[Formula({'~': 'in=true'}),Formula({'~': {'o': 'x=2'}})]]}
+		>>> getTotalNodes(graph)
+		3
+		
+		.. seealso::
+			:py:class:`formula.Formula`		
+		
+	"""
 	total = 0
 	for index_node in graph.keys():
 		total = total + len(graph.get(index_node))
 	return total
 	
 def getModelCheckingAtoms(tcc_structure, atoms):
+	"""
+		Returns the atoms corresponding to the states of a tcc structure.
+		
+		:param tcc_structure: Structure representing the behaviour of a system.
+		:type tcc_structure: Dictionary
+		
+		:param atoms: List of all possible atoms of closure.
+		:type atoms: List of atoms
+		
+		:returns: Dictionary that have the states of a tcc structure as keys, and a list of consistent atoms as values.
+		:rtype: Dictionary
+		
+		:Example:
+
+		>>> from modelCheckingGraph import *
+		>>> from closure import *
+		>>> tcc_structure = { 
+		... 1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": True},
+		... 2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False},
+		... 4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": True},
+		... 5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False}
+		... }
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
+		>>> for tcc_node in model_checking_atoms.keys():
+		...     print "tcc State", tcc_node
+		...     tcc_atoms = model_checking_atoms.get(tcc_node)
+		...     for atom_index in tcc_atoms.keys():
+		...             print "Atom ", atom_index
+		...             for formula in tcc_atoms.get(atom_index):
+		...                     print formula.getFormula(), " | ",
+		...             print "\\n"
+		tcc State 1
+		Atom  1
+		{'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}  |  {'': 'in=true'}  |  {'o': 'x=2'}  |  {'': 'x=2'}  |  {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}  |  {'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}  |  		
+		Atom  2
+		{'~': {'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}}  |  {'': 'in=true'}  |  {'o': 'x=2'}  |  {'': 'x=2'}  |  {'o': {'~': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}}  |  {'~': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}  |  {'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}  |
+
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`	
+	"""
 	model_checking_atoms = {}
 	for tcc_node in tcc_structure.keys():
 		atoms_node = atoms
@@ -331,13 +491,44 @@ def getModelCheckingAtoms(tcc_structure, atoms):
 				else:
 					delete_atoms.append(index_atom)
 				index_atom +=1
-			atoms_node = __deleteAtoms(atoms_node,delete_atoms)
-		model_checking_atoms[tcc_node] = __list2dict(atoms_node,__getTotalNodes(model_checking_atoms) + 1)
+			atoms_node = deleteAtoms(atoms_node,delete_atoms)
+		model_checking_atoms[tcc_node] = list2dict(atoms_node,getTotalNodes(model_checking_atoms) + 1)
 	return model_checking_atoms
 	
 ######################################## Model Checking Graph ########################################
 
 def isNextState(nextFormulas,nextAtom):
+	"""
+		Checks if an atom satisfies a list of formulas with next operator as main connective. 
+
+		:param nextFormulas: List of formulas with next operator as main connective.
+		:type nextFormulas: List of :py:class:`~formula.Formula`
+
+		:param nextAtom: Atom.
+		:type nextAtom: List of :py:class:`~formula.Formula`
+
+		:returns: ``True`` if the atom satisfies the termporal formulas or ``False`` otherwise.
+		:rtype: Boolean
+
+		:Example:
+
+		>>> from modelCheckingGraph import *
+		>>> atom = [Formula({'o': {'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}}),
+		... Formula({'': 'in=true'}), Formula({'o': 'x=2'}), Formula({'': 'x=2'}),
+		... Formula({'<>': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}}),
+		... Formula({'~': {'^': {'': 'in=true', '~': {'o': 'x=2'}}}})]
+		>>> 
+		>>> formulas = [Formula({'o': 'x=2'})]
+		>>> isNextState(formulas,atom)
+		True
+
+		.. note::
+			We say that an atom satisfies a list of formulas when for all the formulas :math:`\circ\phi` in the list we found a formula :math:`\phi` in the atom.
+
+		.. seealso::
+			:py:class:`formula.Formula`
+
+	"""
 	for formula in nextFormulas:
 		next = Formula(formula.getValues())
 		if not isInAtom(next.getFormula(), nextAtom): 
@@ -345,6 +536,47 @@ def isNextState(nextFormulas,nextAtom):
 	return True
 
 def getModelCheckingGraph(tcc_structure, model_checking_atoms):
+	"""
+		Returns the model checking graph
+		
+		:param tcc_structure: Estructure representing the behavior of a system.
+		:type tcc_structure: Dictionary
+		
+		:param model_checking_atoms: Atoms of a tcc structure.
+		:type model_checking_atoms: Dictionary
+		
+		:returns: Structure representing the model checking graph.
+		:rtype: Dictionary
+		
+		:Example:
+		
+		>>> from modelCheckingGraph import *
+		>>> from closure import *
+		>>> tcc_structure = {
+		...  1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": True},
+		... 2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False},
+		... 4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": True},
+		... 5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False}
+		... }
+		>>> phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> closure = []
+		>>> getClosure(phi,closure)
+		>>> atoms = getAllAtoms(closure)
+		>>> model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
+		>>> getModelCheckingGraph(tcc_structure, model_checking_atoms)
+		{1: [9, 11, 12, 13, 15], 2: [10, 16, 14], 3: [], 4: [], 5: [9, 11, 12, 13, 15], 6: [10, 16, 14], 7: [], 8: [], 9: [9, 11, 12, 13, 15], 10: [10, 16, 14], 11: [], 12: [], 13: [], 14: [], 15: [25, 27, 28, 29, 31], 16: [26, 32, 30], 17: [], 18: [], 19: [25, 27, 28, 29, 31], 20: [26, 32, 30], 21: [], 22: [], 23: [25, 27, 28, 29, 31], 24: [26, 32, 30], 25: [9, 11, 12, 13, 15], 26: [10, 16, 14], 27: [], 28: [], 29: [], 30: [], 31: [25, 27, 28, 29, 31], 32: [26, 32, 30]}
+		
+		.. figure:: ./example_model_checking_graph.png
+			:align: center
+			:height: 400px
+			
+			Model checking graph generated.
+		
+		.. seealso::
+			:py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
+	"""
 	model_checking_graph={}
 	for tcc_node in tcc_structure.keys():
 		atoms_tcc_node = model_checking_atoms.get(tcc_node)

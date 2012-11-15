@@ -14,7 +14,7 @@ Contents:
    formula
    closure
    modelCheckingGraph
-	
+   searchingAlgorithm	
 
 
 Indices and tables

@@ -79,6 +79,49 @@
 <span id="model-checking-graph"></span><h1>Model Checking Graph<a class="headerlink" href="#module-modelCheckingGraph" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the necessary functions to generate a model checking graph.</p>
 <dl class="function">
+<dt id="modelCheckingGraph.deleteAtoms">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">deleteAtoms</tt><big>(</big><em>atoms</em>, <em>index_list</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.deleteAtoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes atoms from a list of atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>atoms</strong> (<em>List of lists</em>) &#8211; List of atoms.</li>
+<li><strong>index_list</strong> (<em>List</em>) &#8211; Index list of the elements to be removed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of atoms with atoms removed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">List.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+<span class="go">16</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newAtoms</span> <span class="o">=</span> <span class="n">deleteAtoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">newAtoms</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="modelCheckingGraph.getAllAtoms">
 <tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getAllAtoms</tt><big>(</big><em>closure</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getAllAtoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all possible atoms of the closure.</p>
@@ -127,7 +170,7 @@
 </div>
 <div class="admonition-see-also admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a></p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -170,19 +213,122 @@
 </div>
 <div class="admonition-see-also admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.getModelCheckingAtoms">
 <tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getModelCheckingAtoms</tt><big>(</big><em>tcc_structure</em>, <em>atoms</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getModelCheckingAtoms" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the atoms corresponding to the states of a tcc structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tcc_structure</strong> (<em>Dictionary</em>) &#8211; Structure representing the behaviour of a system.</li>
+<li><strong>atoms</strong> (<em>List of atoms</em>) &#8211; List of all possible atoms of closure.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary that have the states of a tcc structure as keys, and a list of consistent atoms as values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Dictionary</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tcc_structure</span> <span class="o">=</span> <span class="p">{</span> 
+<span class="gp">... </span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">4</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">5</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_checking_atoms</span> <span class="o">=</span> <span class="n">getModelCheckingAtoms</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span><span class="n">atoms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tcc_node</span> <span class="ow">in</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;tcc State&quot;</span><span class="p">,</span> <span class="n">tcc_node</span>
+<span class="gp">... </span>    <span class="n">tcc_atoms</span> <span class="o">=</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tcc_node</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">tcc_atoms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="gp">... </span>            <span class="k">print</span> <span class="s">&quot;Atom &quot;</span><span class="p">,</span> <span class="n">atom_index</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">tcc_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atom_index</span><span class="p">):</span>
+<span class="gp">... </span>                    <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">(),</span> <span class="s">&quot; | &quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="go">tcc State 1</span>
+<span class="go">Atom  1</span>
+<span class="go">{&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}  |  {&#39;&#39;: &#39;in=true&#39;}  |  {&#39;o&#39;: &#39;x=2&#39;}  |  {&#39;&#39;: &#39;x=2&#39;}  |  {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |  {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |             </span>
+<span class="go">Atom  2</span>
+<span class="go">{&#39;~&#39;: {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}  |  {&#39;&#39;: &#39;in=true&#39;}  |  {&#39;o&#39;: &#39;x=2&#39;}  |  {&#39;&#39;: &#39;x=2&#39;}  |  {&#39;o&#39;: {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}  |  {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}  |  {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a>     </p>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.getModelCheckingGraph">
 <tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getModelCheckingGraph</tt><big>(</big><em>tcc_structure</em>, <em>model_checking_atoms</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getModelCheckingGraph" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the model checking graph</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tcc_structure</strong> (<em>Dictionary</em>) &#8211; Estructure representing the behavior of a system.</li>
+<li><strong>model_checking_atoms</strong> (<em>Dictionary</em>) &#8211; Atoms of a tcc structure.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Structure representing the model checking graph.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Dictionary</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tcc_structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span> <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">4</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">5</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t4&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&quot;</span><span class="p">:</span> <span class="s">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span> <span class="s">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;now2&quot;</span><span class="p">],</span> <span class="s">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;t7&quot;</span><span class="p">,</span><span class="s">&quot;p9&quot;</span><span class="p">],</span> <span class="s">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s">&quot;initial&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_checking_atoms</span> <span class="o">=</span> <span class="n">getModelCheckingAtoms</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span><span class="n">atoms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getModelCheckingGraph</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span> <span class="n">model_checking_atoms</span><span class="p">)</span>
+<span class="go">{1: [9, 11, 12, 13, 15], 2: [10, 16, 14], 3: [], 4: [], 5: [9, 11, 12, 13, 15], 6: [10, 16, 14], 7: [], 8: [], 9: [9, 11, 12, 13, 15], 10: [10, 16, 14], 11: [], 12: [], 13: [], 14: [], 15: [25, 27, 28, 29, 31], 16: [26, 32, 30], 17: [], 18: [], 19: [25, 27, 28, 29, 31], 20: [26, 32, 30], 21: [], 22: [], 23: [25, 27, 28, 29, 31], 24: [26, 32, 30], 25: [9, 11, 12, 13, 15], 26: [10, 16, 14], 27: [], 28: [], 29: [], 30: [], 31: [25, 27, 28, 29, 31], 32: [26, 32, 30]}</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="_images/example_model_checking_graph.png" src="_images/example_model_checking_graph.png" style="height: 400px;" />
+<p class="caption">Model checking graph generated.</p>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a></p>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.getNoBasicFormulas">
@@ -217,7 +363,39 @@
 </div>
 <div class="admonition-see-also admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a></p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.getTotalNodes">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">getTotalNodes</tt><big>(</big><em>graph</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.getTotalNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of atoms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>graph</strong> (<em>Dictionary</em>) &#8211; Dictionary representing the atoms in each tcc state.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The total number of atoms.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;&gt; graph = {1: [[Formula({&#39;&#39;: &#39;in=true&#39;}), Formula({&#39;o&#39;: &#39;x=2&#39;})],</span>
+<span class="gp">... </span><span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;^&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">,</span> <span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}}}})]],</span>
+<span class="gp">... </span><span class="mi">2</span><span class="p">:</span> <span class="p">[[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}})]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getTotalNodes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a></p>
 </div>
 </dd></dl>
 
@@ -254,6 +432,10 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">isConsistent</span><span class="p">(</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;x=1&#39;</span><span class="p">}),</span> <span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="go">False</span>
 </pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a></p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -295,17 +477,139 @@
 <span class="go">True</span>
 </pre></div>
 </div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a></p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.isNextState">
 <tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">isNextState</tt><big>(</big><em>nextFormulas</em>, <em>nextAtom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.isNextState" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if an atom satisfies a list of formulas with next operator as main connective.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nextFormulas</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; List of formulas with next operator as main connective.</li>
+<li><strong>nextAtom</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Atom.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><tt class="docutils literal"><span class="pre">True</span></tt> if the atom satisfies the termporal formulas or <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Boolean</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atom</span> <span class="o">=</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;&lt;&gt;&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;^&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">,</span> <span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}}}}}),</span>
+<span class="gp">... </span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">}),</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}),</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}),</span>
+<span class="gp">... </span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;&lt;&gt;&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;^&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">,</span> <span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}}}}),</span>
+<span class="gp">... </span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;^&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;in=true&#39;</span><span class="p">,</span> <span class="s">&#39;~&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">}}}})]</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formulas</span> <span class="o">=</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s">&#39;o&#39;</span><span class="p">:</span> <span class="s">&#39;x=2&#39;</span><span class="p">})]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">isNextState</span><span class="p">(</span><span class="n">formulas</span><span class="p">,</span><span class="n">atom</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We say that an atom satisfies a list of formulas when for all the formulas <img class="math" src="_images/math/9094a45e4b34639c4529ce391dde9a90b27780ee.png" alt="\circ\phi"/> in the list we found a formula <img class="math" src="_images/math/2c175f60eecef1de7560c3bdea495d69f26f719d.png" alt="\phi"/> in the atom.</p>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="modelCheckingGraph.list2dict">
+<tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">list2dict</tt><big>(</big><em>lists</em>, <em>offset</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.list2dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a list to a dictionary with ascending numbers as keys.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lists</strong> (<em>List</em>) &#8211; List with elements.</li>
+<li><strong>offset</strong> (<em>Integer</em>) &#8211; Offset of numeration.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with numbers as keys, and elements of the list as values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Dictionary.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;I&quot;</span><span class="p">,</span> <span class="s">&quot;Love&quot;</span><span class="p">,</span> <span class="s">&quot;Computer&quot;</span><span class="p">,</span> <span class="s">&quot;Science&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list2dict</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">{2: &#39;I&#39;, 3: &#39;Love&#39;, 4: &#39;Computer&#39;, 5: &#39;Science&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.propositionConsistent">
 <tt class="descclassname">modelCheckingGraph.</tt><tt class="descname">propositionConsistent</tt><big>(</big><em>formula</em>, <em>atom</em><big>)</big><a class="headerlink" href="#modelCheckingGraph.propositionConsistent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if a proposition is consistent with the formulas of an atom.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formula</strong> (<a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Formula</li>
+<li><strong>atom</strong> (List of <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">Formula</span></tt></a>) &#8211; Atom</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><tt class="docutils literal"><span class="pre">True</span></tt> if the proposition is consistent with the atom or <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Boolean.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example :</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">closure</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">modelCheckingGraph</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;^&quot;</span><span class="p">:{</span><span class="s">&quot;&quot;</span><span class="p">:</span><span class="s">&quot;in=true&quot;</span><span class="p">,</span><span class="s">&quot;~&quot;</span><span class="p">:{</span><span class="s">&quot;o&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getClosure</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">getAllAtoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proposition</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s">&quot;~&quot;</span><span class="p">:</span><span class="s">&quot;x=2&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atom</span> <span class="o">=</span> <span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">atom</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">formula</span><span class="o">.</span><span class="n">getFormula</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">{&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="go">{&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="go">{&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="go">{&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="go">{&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">propositionConsistent</span><span class="p">(</span><span class="n">proposition</span><span class="p">,</span> <span class="n">atom</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="closure.html#closure.getClosure" title="closure.getClosure"><tt class="xref py py-func docutils literal"><span class="pre">closure.getClosure()</span></tt></a>, <a class="reference internal" href="formula.html#formula.Formula" title="formula.Formula"><tt class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></tt></a>, <a class="reference internal" href="#modelCheckingGraph.getAllAtoms" title="modelCheckingGraph.getAllAtoms"><tt class="xref py py-func docutils literal"><span class="pre">getAllAtoms()</span></tt></a></p>
+</div>
+</dd></dl>
 
 <dl class="function">
 <dt id="modelCheckingGraph.searchFormulas">
