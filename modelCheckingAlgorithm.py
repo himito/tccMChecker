@@ -47,7 +47,7 @@ def modelSatisfiesProperty(formula, tcc_structure):
 		False
 		
 		.. note::
-			The model checking algorithm is based on the work performed by Falaschi and Villanueva []_. For this reason, we need to use the negation of the formula as input of this function and we say that the model satisfies the property if this function returns ``False`` (i.e the model does not satisfy the negation of the formula).
+			The model checking algorithm is based on the work performed by Falaschi and Villanueva [FV06]_. For this reason, we need to use the negation of the formula as input of this function and we say that the model satisfies the property if this function returns ``False`` (i.e the model does not satisfy the negation of the formula).
 			
 		.. seealso::
 			:py:class:`formula.Formula`
