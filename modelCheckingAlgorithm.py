@@ -15,7 +15,7 @@ from closure import getClosure
 from modelCheckingGraph import getAllAtoms, getModelCheckingAtoms, getModelCheckingGraph
 from searchingAlgorithm import getModelCheckingSCCSubgraphs, getInitialNodes, isSelfFulfilling, initialNodesEntailFormula
 from tarjan import tarjan
-from printGraphs import parserGraphviz
+from printGraphs import drawGraph
 
 
 def modelSatisfiesProperty(formula, tcc_structure):
@@ -91,6 +91,11 @@ def modelSatisfiesProperty(formula, tcc_structure):
 	print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
 	print model_checking_scc_subgraphs
 	
+	# Draw Graphs
+	drawGraph(model_checking_graph, "modelCheckingGraph")
+	for index, sccSubgraph in enumerate(model_checking_scc_subgraphs):
+		drawGraph(sccSubgraph, "SCC_Subgraph_"+str(index+1))
+	
 	# Self-Fulfilling SCC and Initial Nodes
 	initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
 	for scc_graph in model_checking_scc_subgraphs:
@@ -117,7 +122,7 @@ if __name__ == "__main__":
 	}
 
 	# Formula
-	phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+	phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=1"}}}})
 	print "Formula: "
 	print phi.getFormula()
 	
@@ -126,8 +131,7 @@ if __name__ == "__main__":
 	result = modelSatisfiesProperty(phi, tcc_structure)
 	print "Model Satisfies Formula: ", not result
 
-	# Output
-	# parserGraphviz(model_checking_scc_subgraphs[1])
+
 
 
 	

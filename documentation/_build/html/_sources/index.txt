@@ -16,6 +16,7 @@ Contents:
    modelCheckingGraph
    searchingAlgorithm
    modelCheckingAlgorithm
+   printGraphs
 
 
 Indices and tables
