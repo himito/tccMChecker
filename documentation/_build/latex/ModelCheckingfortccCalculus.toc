@@ -1,9 +1,0 @@
-\select@language {english}
-\contentsline {chapter}{\numberline {1}Formula}{3}{chapter.1}
-\contentsline {chapter}{\numberline {2}Closure}{7}{chapter.2}
-\contentsline {chapter}{\numberline {3}Model Checking Graph}{9}{chapter.3}
-\contentsline {chapter}{\numberline {4}Searching Algorithm}{17}{chapter.4}
-\contentsline {chapter}{\numberline {5}Indices and tables}{21}{chapter.5}
-\contentsline {chapter}{Bibliography}{23}{chapter*.36}
-\contentsline {chapter}{Python Module Index}{25}{section*.38}
-\contentsline {chapter}{Index}{27}{section*.39}
