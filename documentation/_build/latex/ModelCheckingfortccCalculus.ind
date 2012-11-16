@@ -5,6 +5,10 @@
   \item closure (module), \hyperpage{7}
 
   \indexspace
+  \bigletter D
+  \item deleteAtoms() (in module modelCheckingGraph), \hyperpage{9}
+
+  \indexspace
   \bigletter F
   \item Formula (class in formula), \hyperpage{3}
   \item formula (module), \hyperpage{3}
@@ -17,23 +21,34 @@
   \item getConnective() (formula.Formula method), \hyperpage{3}
   \item getConsistentPropositions() (formula.Formula method), \hyperpage{3}
   \item getFormula() (formula.Formula method), \hyperpage{4}
+  \item getFormulas() (in module searchingAlgorithm), \hyperpage{17}
+  \item getInitialNodes() (in module searchingAlgorithm), \hyperpage{17}
   \item getModelCheckingAtoms() (in module modelCheckingGraph), \hyperpage{10}
-  \item getModelCheckingGraph() (in module modelCheckingGraph), \hyperpage{10}
+  \item getModelCheckingGraph() (in module modelCheckingGraph), \hyperpage{11}
+  \item getModelCheckingSCCSubgraphs() (in module searchingAlgorithm), \hyperpage{18}
   \item getNegation() (formula.Formula method), \hyperpage{4}
-  \item getNoBasicFormulas() (in module modelCheckingGraph), \hyperpage{10}
+  \item getNoBasicFormulas() (in module modelCheckingGraph), \hyperpage{12}
   \item getPropositionRules() (formula.Formula method), \hyperpage{4}
   \item getSubFormulas() (formula.Formula method), \hyperpage{4}
+  \item getTotalNodes() (in module modelCheckingGraph), \hyperpage{12}
   \item getValues() (formula.Formula method), \hyperpage{5}
 
   \indexspace
   \bigletter I
+  \item initialNodesEntailFormula() (in module searchingAlgorithm), \hyperpage{19}
   \item isBasic() (formula.Formula method), \hyperpage{5}
-  \item isConsistent() (in module modelCheckingGraph), \hyperpage{10}
-  \item isInAtom() (in module modelCheckingGraph), \hyperpage{11}
+  \item isConsistent() (in module modelCheckingGraph), \hyperpage{14}
+  \item isInAtom() (in module modelCheckingGraph), \hyperpage{14}
   \item isNegativeFormula() (formula.Formula method), \hyperpage{5}
   \item isNegativeNext() (formula.Formula method), \hyperpage{5}
-  \item isNextState() (in module modelCheckingGraph), \hyperpage{11}
+  \item isNextState() (in module modelCheckingGraph), \hyperpage{14}
   \item isProposition() (formula.Formula method), \hyperpage{6}
+  \item isSatisfied() (in module searchingAlgorithm), \hyperpage{19}
+  \item isSelfFulfilling() (in module searchingAlgorithm), \hyperpage{19}
+
+  \indexspace
+  \bigletter L
+  \item list2dict() (in module modelCheckingGraph), \hyperpage{15}
 
   \indexspace
   \bigletter M
@@ -41,10 +56,11 @@
 
   \indexspace
   \bigletter P
-  \item propositionConsistent() (in module modelCheckingGraph), \hyperpage{11}
+  \item propositionConsistent() (in module modelCheckingGraph), \hyperpage{15}
 
   \indexspace
   \bigletter S
-  \item searchFormulas() (in module modelCheckingGraph), \hyperpage{11}
+  \item searchFormulas() (in module modelCheckingGraph), \hyperpage{16}
+  \item searchingAlgorithm (module), \hyperpage{17}
 
 \end{theindex}

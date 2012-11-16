@@ -589,7 +589,7 @@ def getModelCheckingGraph(tcc_structure, model_checking_atoms):
 				for index_n2 in atoms_next_tcc_node.keys():
 					atom_n2 = atoms_next_tcc_node.get(index_n2)
 					if isNextState(nextFormulas, atom_n2):
-						print "tcc state: ", tcc_node, "(", index_n1, ") -> ", "next tcc state", next_tcc_node, "(", index_n2, ")"
+						# print "tcc state: ", tcc_node, "(", index_n1, ") -> ", "next tcc state", next_tcc_node, "(", index_n2, ")"
 						next_nodes.append(index_n2)
 			model_checking_graph[index_n1] = next_nodes
 	return model_checking_graph
