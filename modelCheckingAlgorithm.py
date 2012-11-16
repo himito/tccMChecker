@@ -1,7 +1,7 @@
 # Filename: modelCheckingAlgorithm.py
 
 """
-This module contains the necessary functions to .
+This module contains the function that determines if a model satisfies a property.
 """
 
 __author__ = "Jaime E. Arias Almeida"
@@ -20,18 +20,37 @@ from printGraphs import parserGraphviz
 
 def modelSatisfiesProperty(formula, tcc_structure):
 	"""
-		Checks if a model checking graph satisfies a formula.
+		Checks if a model satisfies a formula.
 		
-		:param formula:
-		:type formula:
+		:param formula: Formula 
+		:type formula: :py:class:`~formula.Formula`
 		
-		:param tcc_structure:
-		:type tcc_structure:
+		:param tcc_structure: tcc Structure
+		:type tcc_structure: Dictionary
 		
-		:returns:
-		:rtype:
+		:returns: ``True`` if the model satisfies the formula or ``False`` otherwise.
+		:rtype: Boolean
 		
 		:Example:
+		
+		>>> from modelCheckingAlgorithm import *
+		>>> tcc_structure = {
+		... 1: {"store": [Formula({"":"in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": True},
+		... 2: {"store": [Formula({"": "x=2"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 3: {"store": [Formula({"": "x=2"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False},
+		... 4: {"store": [Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": True},
+		... 5: {"store": [Formula({"": "x=1"}),Formula({"": "in=true"})], "normal": [], "temporal": ["t4","p9"], "edges": [2,3], "initial": False},
+		... 6: {"store": [Formula({"": "x=1"}),Formula({"~": "in=true"})], "normal": ["now2"], "temporal": ["t7","p9"], "edges": [5,6], "initial": False}
+		... }
+		>>> formula = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
+		>>> modelSatisfiesProperty(formula, tcc_structure)
+		False
+		
+		.. note::
+			The model checking algorithm is based on the work performed by Falaschi and Villanueva []_. For this reason, we need to use the negation of the formula as input of this function and we say that the model satisfies the property if this function returns ``False`` (i.e the model does not satisfy the negation of the formula).
+			
+		.. seealso::
+			:py:class:`formula.Formula`
 		
 	"""
 	
