@@ -122,7 +122,7 @@ if __name__ == "__main__":
 	}
 
 	# Formula
-	phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=1"}}}})
+	phi = Formula({"<>": {"^":{"":"in=true","~":{"o":"x=2"}}}})
 	print "Formula: "
 	print phi.getFormula()
 	
