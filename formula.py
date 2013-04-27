@@ -37,7 +37,7 @@ class Formula:
 			* And : ``^``
 	
 	"""
-	__propositions = ["in=true", "x=2", "x=1"]
+	__propositions = ["da=0", "da=5", "da=10", "da=15", "da=20", "b=1", "tc", "tt", "dc", "dd"]
 	__proposition_rules = {"x=2" : {"~":"x=1"}, "x=1" : {"~":"x=2"}}
 	__operators = ["o", "<>", "[]", "v", "^", "~"]
 	__formula = {}
