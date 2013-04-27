@@ -263,7 +263,7 @@ def isConsistent(formula, atom):
         
             This function is based on the conditions shown in the defintion 6.1 of the thesis document.
     """
-    rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})} # Change!
+#    rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})} # Change!
 #   print formula.formula
     if not isInAtom(formula.getNegation().getFormula(), atom):
         if formula.getConnective() == "<>": # <> rules
