@@ -65,18 +65,28 @@ def modelSatisfiesProperty(formula, tcc_structure):
     # All possible atoms
     atoms = getAllAtoms(closure)
 
-    ## Model Checking Atoms
-    #model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
+    print "============================================================================"
+    i=1
+    for atom in atoms:
+        print "Atomo: ",i
+        for f in atom:
+            print f.getFormula()
+        print "--------------------------------"
+        i=i+1
 
-    #for tcc_node in model_checking_atoms.keys():
-        #print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
-        #tcc_atoms = model_checking_atoms.get(tcc_node)
-        #for atom_index in tcc_atoms.keys():
-            #print "Atom ", atom_index
-            #for formula_atom in tcc_atoms.get(atom_index):
-                #print formula_atom.getFormula(), " | ",
-            #print "\n"  
-    
+
+    # Model Checking Atoms
+#    model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
+
+#    for tcc_node in model_checking_atoms.keys():
+#        print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
+#        tcc_atoms = model_checking_atoms.get(tcc_node)
+#        for atom_index in tcc_atoms.keys():
+#            print "Atom ", atom_index
+#            for formula_atom in tcc_atoms.get(atom_index):
+#                print formula_atom.getFormula(), " | ",
+#            print "\n"  
+
     ## Model Checking Graph
     #model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
     #print "Model Checking Graph"
