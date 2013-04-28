@@ -87,36 +87,36 @@ def modelSatisfiesProperty(formula, tcc_structure):
                 print formula_atom.getFormula(), " | ",
             print "\n"  
 
-    ## Model Checking Graph
-    #model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
-    #print "Model Checking Graph"
-    #print model_checking_graph
-    
-    ## Strongly Connected Components
-    #strongly_connected_components = tarjan(model_checking_graph)
-    #print "Strongly Connected Components : "
-    #print strongly_connected_components
-    
-    #model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
-    #print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
-    #print model_checking_scc_subgraphs
-    
-    ## Draw Graphs
-    ##drawGraph(model_checking_graph, "modelCheckingGraph")
-    ##for index, sccSubgraph in enumerate(model_checking_scc_subgraphs):
-    ##   drawGraph(sccSubgraph, "SCC_Subgraph_"+str(index+1))
-    
-    ## Self-Fulfilling SCC and Initial Nodes
-    #initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
-    #for scc_graph in model_checking_scc_subgraphs:
-        #selfFulfillingSCC = isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms)
-        #entailFormula = initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula)
-        #print "SCC Graph: ", scc_graph
-        #print "is Self Fulfilling: ", selfFulfillingSCC
-        #print "Initial Nodes Entail Formula: ", entailFormula
-        #if selfFulfillingSCC and entailFormula:
-            #return True
-    #return False
+#    # Model Checking Graph
+#    model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
+#    print "Model Checking Graph"
+#    print model_checking_graph
+#
+#    # Strongly Connected Components
+#    strongly_connected_components = tarjan(model_checking_graph)
+#    print "Strongly Connected Components : "
+#    print strongly_connected_components
+#
+#    model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
+#    print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
+#    print model_checking_scc_subgraphs
+#
+#    ## Draw Graphs
+#    ##drawGraph(model_checking_graph, "modelCheckingGraph")
+#    ##for index, sccSubgraph in enumerate(model_checking_scc_subgraphs):
+#    ##   drawGraph(sccSubgraph, "SCC_Subgraph_"+str(index+1))
+#    
+#    # Self-Fulfilling SCC and Initial Nodes
+#    initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
+#    for scc_graph in model_checking_scc_subgraphs:
+#        selfFulfillingSCC = isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms)
+#        entailFormula = initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula)
+#        print "SCC Graph: ", scc_graph
+#        print "is Self Fulfilling: ", selfFulfillingSCC
+#        print "Initial Nodes Entail Formula: ", entailFormula
+#        if selfFulfillingSCC and entailFormula:
+#            return True
+#    return False
 
 
 # Main
@@ -417,7 +417,7 @@ if __name__ == "__main__":
     }
 
     # Formula
-    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"b=1"}, "~":{"o":"tc"}}}})
+    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"sm=10"}, "~":{"o":"dd"}}}})
     print "Formula: "
     print phi.getFormula()
 
