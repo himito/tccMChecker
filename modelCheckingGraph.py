@@ -512,9 +512,15 @@ def getModelCheckingAtoms(tcc_structure, atoms):
                 for f in atom:
                     print f.getFormula()
         
-#                if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
                 if  isConsistent(proposition,atom):
                     print "ES CONSISTENTE"
+                    if (proposition.getConnective() == "^"):
+                        subformulas = proposition.getSubFormulas()
+                        if not isInAtom(subformulas[0].getFormula(),atom):
+                            atoms_node[index_atom].append(subformulas[0])
+                        if not isInAtom(subformulas[1].getFormula(),atom):
+                            atoms_node[index_atom].append(subformulas[1])
+            
                     if not isInAtom(proposition.getFormula(),atom):
                         atoms_node[index_atom].append(proposition)
                 else:
