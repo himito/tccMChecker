@@ -77,15 +77,15 @@ def modelSatisfiesProperty(formula, tcc_structure):
 
     # Model Checking Atoms
     model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
-
-    for tcc_node in model_checking_atoms.keys():
-        print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
-        tcc_atoms = model_checking_atoms.get(tcc_node)
-        for atom_index in tcc_atoms.keys():
-            print "Atom ", atom_index
-            for formula_atom in tcc_atoms.get(atom_index):
-                print formula_atom.getFormula(), " | ",
-            print "\n"  
+#
+#    for tcc_node in model_checking_atoms.keys():
+#        print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
+#        tcc_atoms = model_checking_atoms.get(tcc_node)
+#        for atom_index in tcc_atoms.keys():
+#            print "Atom ", atom_index
+#            for formula_atom in tcc_atoms.get(atom_index):
+#                print formula_atom.getFormula(), " | ",
+#            print "\n"  
 
     ## Model Checking Graph
     #model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)

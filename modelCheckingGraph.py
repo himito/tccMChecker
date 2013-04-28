@@ -232,6 +232,15 @@ def isInAtom(formula, atom):
     return False
 
 
+def cleanConector(formula):
+    formula_temp = formula.getFormula()
+    key = formula_temp.keys()[0]
+    key_new = key.replace(" ","")
+    formula_temp[key_new] = formula_temp.pop(key)
+    return Formula(formula_temp)
+
+    
+
 def isConsistent(formula, atom):
     """
         Checks if a formula is consistent with the set of formulas in an atom.
@@ -264,17 +273,17 @@ def isConsistent(formula, atom):
             This function is based on the conditions shown in the defintion 6.1 of the thesis document.
     """
 #    rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})} # Change!
-    formula_temp = formula.getFormula()
-    key = formula_temp.keys()[0]
-    key_new = key.replace(" ","")
-    formula_temp[key_new] = formula_temp.pop(key)
-    formula = Formula(formula_temp)
+    formula = cleanConector(formula)
+#    formula_temp = formula.getFormula()
+#    key = formula_temp.keys()[0]
+#    key_new = key.replace(" ","")
+#    formula_temp[key_new] = formula_temp.pop(key)
+#    formula = Formula(formula_temp)
     
     print "verificando: ", formula.getFormula()
     
     
     if not isInAtom(formula.getNegation().getFormula(), atom):
-        print "No esta la negacion"
         if formula.getConnective() == "<>": # <> rules
             if isInAtom({"o": formula.getFormula()},atom) or isConsistent(Formula(formula.getValues()), atom):
                 return True
@@ -290,14 +299,18 @@ def isConsistent(formula, atom):
             if isConsistent(subformulas[0], atom) or isConsistent(subformulas[1], atom):
                 return True
         elif formula.isProposition() or formula.getConnective() == "o" or formula.isNegativeNext():
-            if (formula.isProposition()):
+            if (formula.isProposition() and formula.getConnective() == ""):
                 if propositionConsistent(formula, atom):
                     return True
+            elif (formula.isProposition() and formula.getConnective() == "~"):
+                print "No esta la negacion"
+                return True
             elif(formula.getFormula().keys()[0]== " "): # cuando es {" ": values}
                 if isInAtom({"": formula.getFormula().values()[0]}, atom):
                     return True
             elif isInAtom(formula.getFormula(), atom):
                 return True
+            
     return False
 
 
@@ -517,9 +530,9 @@ def getModelCheckingAtoms(tcc_structure, atoms):
                     if (proposition.getConnective() == "^"):
                         subformulas = proposition.getSubFormulas()
                         if not isInAtom(subformulas[0].getFormula(),atom):
-                            atoms_node[index_atom].append(subformulas[0])
+                            atoms_node[index_atom].append(cleanConector(subformulas[0]))
                         if not isInAtom(subformulas[1].getFormula(),atom):
-                            atoms_node[index_atom].append(subformulas[1])
+                            atoms_node[index_atom].append(cleanConector(subformulas[1]))
             
                     if not isInAtom(proposition.getFormula(),atom):
                         atoms_node[index_atom].append(proposition)
