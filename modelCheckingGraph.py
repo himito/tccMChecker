@@ -264,8 +264,17 @@ def isConsistent(formula, atom):
             This function is based on the conditions shown in the defintion 6.1 of the thesis document.
     """
 #    rules = {"x=2": Formula({"~": "x=1"}), "x=1": Formula({"~": "x=2"})} # Change!
-#   print formula.formula
+    formula_temp = formula.getFormula()
+    key = formula_temp.keys()[0]
+    key_new = key.replace(" ","")
+    formula_temp[key_new] = formula_temp.pop(key)
+    formula = Formula(formula_temp)
+    
+    print "verificando: ", formula.getFormula()
+    
+    
     if not isInAtom(formula.getNegation().getFormula(), atom):
+        print "No esta la negacion"
         if formula.getConnective() == "<>": # <> rules
             if isInAtom({"o": formula.getFormula()},atom) or isConsistent(Formula(formula.getValues()), atom):
                 return True
@@ -281,7 +290,10 @@ def isConsistent(formula, atom):
             if isConsistent(subformulas[0], atom) or isConsistent(subformulas[1], atom):
                 return True
         elif formula.isProposition() or formula.getConnective() == "o" or formula.isNegativeNext():
-            if(formula.getFormula().keys()[0]== " "): # cuando es {" ": values}
+            if (formula.isProposition()):
+                if propositionConsistent(formula, atom):
+                    return True
+            elif(formula.getFormula().keys()[0]== " "): # cuando es {" ": values}
                 if isInAtom({"": formula.getFormula().values()[0]}, atom):
                     return True
             elif isInAtom(formula.getFormula(), atom):
@@ -371,11 +383,17 @@ def propositionConsistent(formula, atom):
             :py:func:`closure.getClosure`, :py:class:`formula.Formula`, :py:func:`.getAllAtoms`
         
     """
+    print "ES PROPOSICION"
     if formula.isProposition() and (formula.getValues() in formula.getPropositionRules().keys()):
-        consistent_propositions= formula.getConsistentPropositions()
-        for consistent_proposition in consistent_propositions:
-            if isConsistent(Formula(consistent_proposition), atom):
-                return True
+        no_consistent_propositions= formula.getConsistentPropositions()
+        for no_consistent_proposition in no_consistent_propositions:
+            print "esta", no_consistent_proposition, " en el atomo: ",
+            if isInAtom(no_consistent_proposition, atom):
+                print "Si, por lo tanto NO ES CONSISTENTE"
+                return False
+            print "no"
+        print "No hay ninguna incosistencia, por lo tanto es CONSISTENTE"
+        return True
     return False
     
 def list2dict(lists, offset):
@@ -494,7 +512,8 @@ def getModelCheckingAtoms(tcc_structure, atoms):
                 for f in atom:
                     print f.getFormula()
         
-                if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
+#                if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
+                if  isConsistent(proposition,atom):
                     print "ES CONSISTENTE"
                     if not isInAtom(proposition.getFormula(),atom):
                         atoms_node[index_atom].append(proposition)
