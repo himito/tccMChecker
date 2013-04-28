@@ -3,6 +3,7 @@
 """
 This module contains the necessary functions to generate a model checking graph.
 """
+import copy
 
 __author__ = "Jaime E. Arias Almeida"
 __license__ = "beerware"
@@ -400,11 +401,11 @@ def propositionConsistent(formula, atom):
     if formula.isProposition() and (formula.getValues() in formula.getPropositionRules().keys()):
         no_consistent_propositions= formula.getConsistentPropositions()
         for no_consistent_proposition in no_consistent_propositions:
-            print "esta", no_consistent_proposition, " en el atomo: ",
+#            print "esta", no_consistent_proposition, " en el atomo: ",
             if isInAtom(no_consistent_proposition, atom):
-                print "Si, por lo tanto NO ES CONSISTENTE"
+#                print "Si, por lo tanto NO ES CONSISTENTE"
                 return False
-            print "no"
+#            print "no"
         print "No hay ninguna incosistencia, por lo tanto es CONSISTENTE"
         return True
     return False
@@ -512,7 +513,8 @@ def getModelCheckingAtoms(tcc_structure, atoms):
     """
     model_checking_atoms = {}
     for tcc_node in tcc_structure.keys():
-        atoms_node = atoms
+        print "Mirando las preposiciones del ESTADO ", tcc_node, " de ", tcc_structure.keys()
+        atoms_node = copy.deepcopy(atoms)
         propositions = tcc_structure.get(tcc_node).get("store")
         for proposition in propositions: # Propositions as formulas
             index_atom = 0

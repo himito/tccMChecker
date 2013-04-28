@@ -65,19 +65,19 @@ def modelSatisfiesProperty(formula, tcc_structure):
     # All possible atoms
     atoms = getAllAtoms(closure)
 
-#    print "============================================================================"
-#    i=1
-#    for atom in atoms:
-#        print "Atomo: ",i
-#        for f in atom:
-#            print f.getFormula()
-#        print "--------------------------------"
-#        i=i+1
+    print "============================================================================"
+    i=1
+    for atom in atoms:
+        print "Atomo: ",i
+        for f in atom:
+            print f.getFormula()
+        print "--------------------------------"
+        i=i+1
 
 
     # Model Checking Atoms
     model_checking_atoms = getModelCheckingAtoms(tcc_structure,atoms)
-#
+
 #    for tcc_node in model_checking_atoms.keys():
 #        print "Atoms State", tcc_node, "(", len(model_checking_atoms.get(tcc_node)), ")"
 #        tcc_atoms = model_checking_atoms.get(tcc_node)
