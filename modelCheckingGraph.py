@@ -372,8 +372,10 @@ def propositionConsistent(formula, atom):
         
     """
     if formula.isProposition() and (formula.getValues() in formula.getPropositionRules().keys()):
-        if isConsistent(Formula(formula.getConsistentPropositions()), atom):
-            return True
+        consistent_propositions= formula.getConsistentPropositions()
+        for consistent_proposition in consistent_propositions:
+            if isConsistent(Formula(consistent_proposition), atom):
+                return True
     return False
     
 def list2dict(lists, offset):
@@ -486,11 +488,18 @@ def getModelCheckingAtoms(tcc_structure, atoms):
             delete_atoms = []
             while index_atom < len(atoms_node):
                 atom = atoms_node[index_atom]
+                
+                print "----------------------------------------------------------------------"
+                print "evaluating proposition: ", proposition.getFormula()
+                for f in atom:
+                    print f.getFormula()
         
                 if  isConsistent(proposition,atom) or propositionConsistent(proposition, atom):
+                    print "ES CONSISTENTE"
                     if not isInAtom(proposition.getFormula(),atom):
                         atoms_node[index_atom].append(proposition)
                 else:
+                    print "NO ES CONSISTENTE"
                     delete_atoms.append(index_atom)
                 index_atom +=1
             atoms_node = deleteAtoms(atoms_node,delete_atoms)

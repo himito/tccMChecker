@@ -38,7 +38,7 @@ class Formula:
 	
 	"""
 	__propositions = ["da=0", "da=5", "da=10", "da=15", "da=20", "b=0", "b=1", "b=2", "b=3", "sm=0", "sm=5", "sm=10", "tc", "tt", "dc", "dd"]
-	__proposition_rules = {"x=2" : {"~":"x=1"}, "x=1" : {"~":"x=2"}}
+	__proposition_rules = {"da=0" : [{"~":"da=5"},{"~":"da=10"}, {"~":"da=15"},{"~":"da=20"}]}
 	__operators = ["o", "<>", "[]", "v", "^", "~"]
 	__formula = {}
 	
