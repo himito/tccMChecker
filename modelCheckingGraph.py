@@ -404,6 +404,7 @@ def propositionConsistent(formula, atom):
 #            print "esta", no_consistent_proposition, " en el atomo: ",
             if isInAtom(no_consistent_proposition, atom):
 #                print "Si, por lo tanto NO ES CONSISTENTE"
+                print "por", no_consistent_proposition
                 return False
 #            print "no"
         print "No hay ninguna incosistencia, por lo tanto es CONSISTENTE"
