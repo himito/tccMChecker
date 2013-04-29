@@ -308,7 +308,7 @@ if __name__ == "__main__":
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=5"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=10"}}),
-                                       Formula({"^":{"":"b=0", " ":"sm=0"}})
+                                       Formula({"^":{"": "b=0", " ":"sm=0"}})
                                       ],
                             "normal": [],
                             "temporal": ["p78"],
@@ -404,7 +404,7 @@ if __name__ == "__main__":
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=5"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=10"}}),
-                                       Formula({"^":{"":"b=0", " ":"sm=0"}})
+                                       Formula({"^":{"": "b=0", " ":"sm=0"}})
                                        ],
                             "normal": [],
                             "temporal": ["p114"],
@@ -487,9 +487,12 @@ if __name__ == "__main__":
     }
 
     # Formula
-    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"b=2"}, "~":{"o":"tt"}}}})
+#    phi = Formula({"<>":{"^":{"^":{"":"da=10", " ":"b=1"}, "~":{"o":"tc"}}}})
 #    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=5"}}}}) #funciona (resultado False)
-#    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
+    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
+
+#    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=5"}}}}) #funciona (resultado False)
+
 
     print "Formula: "
     print phi.getFormula()
