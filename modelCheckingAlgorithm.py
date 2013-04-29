@@ -308,6 +308,7 @@ if __name__ == "__main__":
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=5"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=10"}}),
+                                       Formula({"^":{"":"b=0", " ":"sm=0"}})
                                       ],
                             "normal": [],
                             "temporal": ["p78"],
@@ -403,7 +404,7 @@ if __name__ == "__main__":
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=5"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=10"}}),
-                                       Formula({"^":{"":"b=0", " ":"sm=0"}}
+                                       Formula({"^":{"":"b=0", " ":"sm=0"}})
                                        ],
                             "normal": [],
                             "temporal": ["p114"],
