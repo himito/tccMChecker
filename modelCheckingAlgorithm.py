@@ -88,35 +88,35 @@ def modelSatisfiesProperty(formula, tcc_structure):
             print "\n"  
 
 #    # Model Checking Graph
-#    model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
-#    print "Model Checking Graph"
-#    print model_checking_graph
+    model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
+    print "Model Checking Graph"
+    print model_checking_graph
 #
 #    # Strongly Connected Components
-#    strongly_connected_components = tarjan(model_checking_graph)
-#    print "Strongly Connected Components : "
-#    print strongly_connected_components
+    strongly_connected_components = tarjan(model_checking_graph)
+    print "Strongly Connected Components : "
+    print strongly_connected_components
 #
-#    model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
-#    print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
-#    print model_checking_scc_subgraphs
+    model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
+    print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
+    print model_checking_scc_subgraphs
 #
 #    ## Draw Graphs
 #    ##drawGraph(model_checking_graph, "modelCheckingGraph")
 #    ##for index, sccSubgraph in enumerate(model_checking_scc_subgraphs):
 #    ##   drawGraph(sccSubgraph, "SCC_Subgraph_"+str(index+1))
 #    
-#    # Self-Fulfilling SCC and Initial Nodes
-#    initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
-#    for scc_graph in model_checking_scc_subgraphs:
-#        selfFulfillingSCC = isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms)
-#        entailFormula = initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula)
-#        print "SCC Graph: ", scc_graph
-#        print "is Self Fulfilling: ", selfFulfillingSCC
-#        print "Initial Nodes Entail Formula: ", entailFormula
-#        if selfFulfillingSCC and entailFormula:
-#            return True
-#    return False
+    # Self-Fulfilling SCC and Initial Nodes
+    initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
+    for scc_graph in model_checking_scc_subgraphs:
+        selfFulfillingSCC = isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms)
+        entailFormula = initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula)
+        print "SCC Graph: ", scc_graph
+        print "is Self Fulfilling: ", selfFulfillingSCC
+        print "Initial Nodes Entail Formula: ", entailFormula
+        if selfFulfillingSCC and entailFormula:
+            return True
+    return False
 
 
 # Main
@@ -124,6 +124,9 @@ if __name__ == "__main__":
     
     # TCC Structure
     tcc_structure = {   1: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"^":{"": "b=1", " ":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -137,6 +140,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         2: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"^":{"": "b=2", " ":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -150,6 +156,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         3: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"^":{"": "b=3", " ":"sm=0"}}),
@@ -163,6 +172,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         4: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -176,6 +188,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         5: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -189,6 +204,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         6: {"store": [Formula({"":"da=0"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -202,6 +220,9 @@ if __name__ == "__main__":
                             "initial": True
                             },
                         7: {"store": [Formula({"":"da=5"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"^":{"": "b=1", " ":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -215,6 +236,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         8: {"store": [Formula({"":"da=5"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"^":{"": "b=2", " ":"sm=0"}}),
                                       Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -228,6 +252,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         9: {"store": [Formula({"":"da=5"}),
+                                      Formula({"~":"dd"}),
+                                      Formula({"~":"tc"}),
+                                      Formula({"~":"tt"}),
                                       Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                       Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                       Formula({"^":{"": "b=3", " ":"sm=0"}}),
@@ -241,6 +268,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         10: {"store": [Formula({"":"da=5"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -254,6 +284,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         11: {"store": [Formula({"":"da=5"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -267,6 +300,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         12: {"store": [Formula({"":"da=5"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -279,6 +315,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         13: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"^":{"": "b=1", " ":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -292,6 +331,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         14: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"^":{"": "b=2", " ":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -305,6 +347,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         15: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"^":{"": "b=3", " ":"sm=0"}}),
@@ -318,6 +363,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         16: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -331,6 +379,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         17: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
@@ -344,11 +395,15 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         18: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"v":{"~":"b=1", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=2", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=3", " ~":"sm=0"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=5"}}),
                                        Formula({"v":{"~":"b=0", " ~":"sm=10"}}),
+                                       Formula({"^":{"":"b=0", " ":"sm=0"}}
                                        ],
                             "normal": [],
                             "temporal": ["p114"],
@@ -356,6 +411,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         19: {"store": [Formula({"":"da=0"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
                                        Formula({"":"tt"}),
                                        Formula({"":"dc"})
                                        ],
@@ -365,6 +422,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         20: {"store": [Formula({"":"da=5"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"":"dd"})
                                        ],
                             "normal": [],
@@ -373,6 +432,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         21: {"store": [Formula({"":"da=15"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"":"dd"})
                                        ],
                             "normal": [],
@@ -381,7 +442,9 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         22: {"store": [Formula({"":"da=0"}),
+                                       Formula({"~":"dd"}),
                                        Formula({"":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"":"dc"})
                                        ],
                             "normal": [],
@@ -390,6 +453,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         23: {"store": [Formula({"":"da=5"}),
+                                       Formula({"~":"dd"}),
+                                       Formula({"~":"tc"}),
                                        Formula({"":"tt"}),
                                        Formula({"":"dc"})
                                        ],
@@ -399,6 +464,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         24: {"store": [Formula({"":"da=10"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"":"dd"})
                                        ],
                             "normal": [],
@@ -407,6 +474,8 @@ if __name__ == "__main__":
                             "initial": False
                             },
                         25: {"store": [Formula({"":"da=20"}),
+                                       Formula({"~":"tc"}),
+                                       Formula({"~":"tt"}),
                                        Formula({"":"dd"})
                                        ],
                             "normal": [],
@@ -417,7 +486,10 @@ if __name__ == "__main__":
     }
 
     # Formula
-    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"sm=10"}, "~":{"o":"dd"}}}})
+    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"b=2"}, "~":{"o":"tt"}}}})
+#    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=5"}}}}) #funciona (resultado False)
+#    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
+
     print "Formula: "
     print phi.getFormula()
 
