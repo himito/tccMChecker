@@ -487,11 +487,15 @@ if __name__ == "__main__":
     }
 
     # Formula
-#    phi = Formula({"<>":{"^":{"^":{"":"da=10", " ":"b=1"}, "~":{"o":"tc"}}}})
+    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"sm=10"}, "~":{"o":"dd"}}}})
+
+#    phi = Formula({"[]":{"^":{"^":{"":"da=5", " ":"b=2"}, "~":{"o":"tt"}}}}) # funciona (resultado True)
+
 #    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=5"}}}}) #funciona (resultado False)
-    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
+#    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
 
 #    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=5"}}}}) #funciona (resultado False)
+#    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=0"}}}}) #funciona (resultado True)
 
 
     print "Formula: "
