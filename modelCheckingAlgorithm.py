@@ -58,7 +58,7 @@ def modelSatisfiesProperty(formula, tcc_structure):
     closure = []
     getClosure(formula,closure)
 
-    print "Clausura: ", len(closure)
+    print "Closure: ", len(closure), "formulas"
     for formula_closure in closure:
         print formula_closure.getFormula()
 
@@ -89,7 +89,7 @@ def modelSatisfiesProperty(formula, tcc_structure):
 
 #    # Model Checking Graph
     model_checking_graph = getModelCheckingGraph(tcc_structure, model_checking_atoms)
-    print "Model Checking Graph"
+    print "Model Checking Graph:", max(model_checking_graph.keys()), "nodes"
     print model_checking_graph
 #
 #    # Strongly Connected Components
@@ -98,7 +98,7 @@ def modelSatisfiesProperty(formula, tcc_structure):
     print strongly_connected_components
 #
     model_checking_scc_subgraphs = getModelCheckingSCCSubgraphs(strongly_connected_components, tcc_structure, model_checking_atoms,model_checking_graph)
-    print "Model Checking SCC Subgraphs (", len(model_checking_scc_subgraphs), ")"
+    print "Model Checking SCC Subgraphs:", len(model_checking_scc_subgraphs)
     print model_checking_scc_subgraphs
 #
 #    ## Draw Graphs
@@ -108,12 +108,15 @@ def modelSatisfiesProperty(formula, tcc_structure):
 #    
     # Self-Fulfilling SCC and Initial Nodes
     initial_nodes = getInitialNodes(tcc_structure,model_checking_atoms)
+    scc_n=1
     for scc_graph in model_checking_scc_subgraphs:
         selfFulfillingSCC = isSelfFulfilling(scc_graph, initial_nodes, model_checking_atoms)
         entailFormula = initialNodesEntailFormula(scc_graph, initial_nodes, model_checking_atoms,formula)
-        print "SCC Graph: ", scc_graph
+        print "SCC Graph", scc_n, ":"
+        #print scc_graph
         print "is Self Fulfilling: ", selfFulfillingSCC
         print "Initial Nodes Entail Formula: ", entailFormula
+        scc_n = scc_n + 1
         if selfFulfillingSCC and entailFormula:
             return True
     return False
@@ -487,15 +490,16 @@ if __name__ == "__main__":
     }
 
     # Formula
-    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"sm=10"}, "~":{"o":"dd"}}}})
+#    phi = Formula({"<>":{"^":{"^":{"":"da=5", " ":"b=1"}, "~":{"o":"tc"}}}})
+#    phi = Formula({"<>":{"^":{"^":{"":"da=10", " ":"b=1"}, "~":{"o":"tc"}}}})
 
-#    phi = Formula({"[]":{"^":{"^":{"":"da=5", " ":"b=2"}, "~":{"o":"tt"}}}}) # funciona (resultado True)
+#    phi = Formula({"[]":{"^":{"^":{"":"da=10", " ":"b=1"}, "~":{"o":"tc"}}}}) # funciona (resultado True)
 
 #    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=5"}}}}) #funciona (resultado False)
 #    phi = Formula({"<>":{"^":{"": "dd", "~":{"o":"da=0"}}}}) #funciona (resultado True)
 
 #    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=5"}}}}) #funciona (resultado False)
-#    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=0"}}}}) #funciona (resultado True)
+    phi = Formula({"<>":{"^":{"": "tt", "~":{"o":"da=0"}}}}) #funciona (resultado True)
 
 
     print "Formula: "
@@ -504,6 +508,7 @@ if __name__ == "__main__":
     # Report
     print "***************** REPORT *****************"
     result = modelSatisfiesProperty(phi, tcc_structure)
+    print "***************** RESULT: *****************"
     print "Model Satisfies Formula: ", not result
 
 
