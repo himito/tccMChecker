@@ -1,0 +1,771 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tccMChecker.model_checking_graph &#8212; tccMChecker 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tccMChecker.model_checking_graph</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains the necessary functions to generate a model checking</span>
+<span class="sd">graph.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">formula</span> <span class="k">import</span> <span class="n">Formula</span>
+
+
+<div class="viewcode-block" id="get_basic_formulas"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_basic_formulas">[docs]</a><span class="k">def</span> <span class="nf">get_basic_formulas</span><span class="p">(</span><span class="n">closure</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the basic formulas (i.e. propositions or formulas with</span>
+<span class="sd">    :math:`\circ` as main connective) of the closure.</span>
+
+<span class="sd">    :param closure: Closure of a formula.</span>
+<span class="sd">    :type closure: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :returns: List of basic formulas of the closure.</span>
+<span class="sd">    :rtype: List of :py:class:`~formula.Formula`.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; basic_formulas = get_basic_formulas(closure)</span>
+<span class="sd">    &gt;&gt;&gt; for formula in basic_formulas:</span>
+<span class="sd">    ...     print(formula.get_formula())</span>
+<span class="sd">    ...</span>
+<span class="sd">    {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="sd">    {&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="sd">    {&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&#39;: &#39;x=2&#39;}</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">basic_formulas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">closure</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_basic</span><span class="p">():</span>
+            <span class="n">basic_formulas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">basic_formulas</span></div>
+
+
+<div class="viewcode-block" id="get_no_basic_formulas"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_no_basic_formulas">[docs]</a><span class="k">def</span> <span class="nf">get_no_basic_formulas</span><span class="p">(</span><span class="n">closure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the formulas of the closure that are not basic formulas.</span>
+
+<span class="sd">    :param closure: Closure of a formula.</span>
+<span class="sd">    :type closure: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :returns: List of formulas of the closure that are not basic formulas.</span>
+<span class="sd">    :rtype: List of :py:class:`~formula.Formula`.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; noBasicFormulas = get_no_basic_formulas(closure)</span>
+<span class="sd">    &gt;&gt;&gt; for formula in noBasicFormulas:</span>
+<span class="sd">    ...     print(formula.get_formula())</span>
+<span class="sd">    ...</span>
+<span class="sd">    {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">closure</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;~&quot;</span> <span class="ow">and</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;o&quot;</span> \
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">():</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="search_formulas"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.search_formulas">[docs]</a><span class="k">def</span> <span class="nf">search_formulas</span><span class="p">(</span><span class="n">formulas</span><span class="p">,</span> <span class="n">connective</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the formulas that have a particular main connective.</span>
+
+<span class="sd">    :param formulas: List of formulas.</span>
+<span class="sd">    :type formulas: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :param connective: The main connective.</span>
+<span class="sd">    :type connective: String</span>
+
+<span class="sd">    :returns: List containing the formulas that have the main connective.</span>
+<span class="sd">    :rtype: List</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; list = [Formula({&#39;o&#39;: &#39;x=2&#39;}), Formula({&#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}), Formula({&#39;o&#39;: {&#39;~&#39;: &#39;x=2&#39;}})]</span>
+<span class="sd">    &gt;&gt;&gt; result = search_formulas(list,&#39;o&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; for formula in result:</span>
+<span class="sd">    ...     print(formula.get_formula())</span>
+<span class="sd">    ...</span>
+<span class="sd">    {&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;o&#39;: {&#39;~&#39;: &#39;x=2&#39;}}</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formulas</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="n">connective</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="get_all_atoms"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_all_atoms">[docs]</a><span class="k">def</span> <span class="nf">get_all_atoms</span><span class="p">(</span><span class="n">closure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns all possible atoms of the closure.</span>
+
+<span class="sd">    :param closure: Closure of a formula.</span>
+<span class="sd">    :type closure: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :returns: List of all atoms of the closure.</span>
+<span class="sd">    :rtype: List of lists of :py:class:`~formula.Formula`.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; for index, atom in enumerate(atoms):</span>
+<span class="sd">    ...     print(&quot;Atom &quot; + str(index) + &quot;:&quot;)</span>
+<span class="sd">    ...     for formula in atom:</span>
+<span class="sd">    ...             print(formula.get_formula())</span>
+<span class="sd">    ...</span>
+<span class="sd">    Atom 0:</span>
+<span class="sd">    {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="sd">    {&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="sd">    {&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    Atom 1:</span>
+<span class="sd">    {&#39;~&#39;: {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}</span>
+<span class="sd">    {&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="sd">    {&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;o&#39;: {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}</span>
+<span class="sd">    {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="sd">    {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    ...</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This function is based on the algorithm shown in [MP95]_.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">basic_formulas</span> <span class="o">=</span> <span class="n">get_basic_formulas</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+    <span class="n">no_basic_formulas</span> <span class="o">=</span> <span class="n">get_no_basic_formulas</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+    <span class="n">num_atoms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">basic_formulas</span><span class="p">)</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_atoms</span><span class="p">)]</span>
+
+    <span class="c1"># 2^b Combinations</span>
+    <span class="k">for</span> <span class="n">index_basic_formula</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">basic_formulas</span><span class="p">)):</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">index_basic_formula</span>
+        <span class="n">index_negative</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">negative</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_atoms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">index_negative</span> <span class="o">==</span> <span class="n">num</span><span class="p">:</span>
+                <span class="n">negative</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">negative</span>
+                <span class="n">index_negative</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">negative</span><span class="p">:</span>
+                <span class="n">atoms</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">basic_formulas</span><span class="p">[</span><span class="n">index_basic_formula</span><span class="p">]</span><span class="o">.</span><span class="n">get_negation</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">atoms</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">basic_formulas</span><span class="p">[</span><span class="n">index_basic_formula</span><span class="p">])</span>
+            <span class="n">index_negative</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># o~phi</span>
+    <span class="n">f_temps</span> <span class="o">=</span> <span class="n">search_formulas</span><span class="p">(</span><span class="n">basic_formulas</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">f_temps</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">formula</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atom</span><span class="p">:</span>
+                <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_values</span><span class="p">()}}))</span>
+
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">no_basic_formulas</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_consistent</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_negation</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">atoms</span></div>
+
+
+<div class="viewcode-block" id="is_in_atom"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.is_in_atom">[docs]</a><span class="k">def</span> <span class="nf">is_in_atom</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a formula is in an atom.</span>
+
+<span class="sd">    :param formula: Structure representing a formula.</span>
+<span class="sd">    :type formula: Dictionary</span>
+
+<span class="sd">    :param atom: List of consistent formulas representing an atom of the</span>
+<span class="sd">        closure.</span>
+<span class="sd">    :type atom: List of :py:class:`~formula.Formula`.</span>
+
+<span class="sd">    :returns: ``True`` if the formula is in atom or ``False`` otherwise.</span>
+<span class="sd">    :rtype: Boolean</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; is_in_atom({&#39;&#39;: &#39;in=true&#39;}, atoms[0])</span>
+<span class="sd">    True</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">formulaAtom</span> <span class="ow">in</span> <span class="n">atom</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">formulaAtom</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span> <span class="o">==</span> <span class="n">formula</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="clean_connector"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.clean_connector">[docs]</a><span class="k">def</span> <span class="nf">clean_connector</span><span class="p">(</span><span class="n">formula</span><span class="p">):</span>
+    <span class="n">formula_temp</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">formula_temp</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">key_new</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">formula_temp</span><span class="p">[</span><span class="n">key_new</span><span class="p">]</span> <span class="o">=</span> <span class="n">formula_temp</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Formula</span><span class="p">(</span><span class="n">formula_temp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_consistent"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.is_consistent">[docs]</a><span class="k">def</span> <span class="nf">is_consistent</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a formula is consistent with the set of formulas in an atom.</span>
+
+<span class="sd">    :param formula: Formula</span>
+<span class="sd">    :type formula: :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :param atom: List of consistent formulas representing an atom of the</span>
+<span class="sd">        closure.</span>
+<span class="sd">    :type atom: List of :py:class:`~formula.Formula`.</span>
+
+<span class="sd">    :returns: ``True`` if the formula is consistent with the set of formulas</span>
+<span class="sd">        in the atom or ``False`` otherwise.</span>
+<span class="sd">    :rtype: Boolean</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; is_consistent(Formula({&#39;&#39;: &#39;x=1&#39;}), atoms[0])</span>
+<span class="sd">    False</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This function is based on the conditions shown in the definition 6.1</span>
+<span class="sd">        of the thesis document.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">formula</span> <span class="o">=</span> <span class="n">clean_connector</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;verifying: &quot;</span><span class="p">,</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_negation</span><span class="p">()</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">atom</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&lt;&gt;&quot;</span><span class="p">:</span>  <span class="c1"># &lt;&gt; rules</span>
+            <span class="k">if</span> <span class="n">is_in_atom</span><span class="p">({</span><span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()},</span> <span class="n">atom</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">is_consistent</span><span class="p">(</span><span class="n">Formula</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_values</span><span class="p">()),</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;[]&quot;</span><span class="p">:</span>  <span class="c1"># [] rules</span>
+            <span class="k">if</span> <span class="n">is_in_atom</span><span class="p">({</span><span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()},</span> <span class="n">atom</span><span class="p">)</span> <span class="ow">and</span> \
+                    <span class="n">is_consistent</span><span class="p">(</span><span class="n">Formula</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_values</span><span class="p">()),</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;^&quot;</span><span class="p">:</span>  <span class="c1"># ^ rules</span>
+            <span class="n">subformulas</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_subformulas</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">is_consistent</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom</span><span class="p">)</span> <span class="ow">and</span> \
+                    <span class="n">is_consistent</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span>  <span class="c1"># v rules</span>
+            <span class="n">subformulas</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_subformulas</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">is_consistent</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="n">is_consistent</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">()</span> <span class="ow">or</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;o&quot;</span> <span class="ow">or</span> \
+                <span class="n">formula</span><span class="o">.</span><span class="n">is_negative_next</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">()</span> <span class="ow">and</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">proposition_consistent</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">()</span> <span class="ow">and</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;~&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;it is not the negation&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">elif</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>  <span class="c1"># when {&quot; &quot;: values}</span>
+                <span class="k">if</span> <span class="n">is_in_atom</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]},</span> <span class="n">atom</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">elif</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="delete_atoms"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.delete_atoms">[docs]</a><span class="k">def</span> <span class="nf">delete_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">index_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes atoms from a list of atoms.</span>
+
+<span class="sd">    :param atoms: List of atoms.</span>
+<span class="sd">    :type atoms: List of lists</span>
+
+<span class="sd">    :param index_list: Index list of the elements to be removed.</span>
+<span class="sd">    :type index_list: List</span>
+
+<span class="sd">    :returns: List of atoms with atoms removed.</span>
+<span class="sd">    :rtype: List.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; len(atoms)</span>
+<span class="sd">    16</span>
+<span class="sd">    &gt;&gt;&gt; newAtoms = delete_atoms(atoms,[0,2,3,4,5,6,7,8,9,10,11,12,14,15])</span>
+<span class="sd">    &gt;&gt;&gt; len(newAtoms)</span>
+<span class="sd">    2</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">index_list</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">atoms</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">index_list</span><span class="p">):]</span></div>
+
+
+<div class="viewcode-block" id="proposition_consistent"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.proposition_consistent">[docs]</a><span class="k">def</span> <span class="nf">proposition_consistent</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a proposition is consistent with the formulas of an atom.</span>
+
+<span class="sd">    :param formula: Formula</span>
+<span class="sd">    :type formula: :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :param atom: Atom</span>
+<span class="sd">    :type atom: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :returns: ``True`` if the proposition is consistent with the atom or</span>
+<span class="sd">        ``False`` otherwise.</span>
+<span class="sd">    :rtype: Boolean.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; proposition = Formula({&quot;~&quot;:&quot;x=2&quot;})</span>
+<span class="sd">    &gt;&gt;&gt; atom = atoms[0]</span>
+<span class="sd">    &gt;&gt;&gt; for formula in atom:</span>
+<span class="sd">    ...     print(formula.get_formula())</span>
+<span class="sd">    ...</span>
+<span class="sd">    {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}</span>
+<span class="sd">    {&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="sd">    {&#39;o&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&#39;: &#39;x=2&#39;}</span>
+<span class="sd">    {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+<span class="sd">    &gt;&gt;&gt; proposition_consistent(proposition, atom)</span>
+<span class="sd">    False</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;it is a proposition&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">formula</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span> <span class="ow">in</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_proposition_rules</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">no_consistent_propositions</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_consistent_propositions</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">no_consistent_proposition</span> <span class="ow">in</span> <span class="n">no_consistent_propositions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">no_consistent_proposition</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;by&quot;</span><span class="p">,</span> <span class="n">no_consistent_proposition</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are no inconsistencies, then it is consistent&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="list2dict"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.list2dict">[docs]</a><span class="k">def</span> <span class="nf">list2dict</span><span class="p">(</span><span class="n">lists</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a list to a dictionary with ascending numbers as keys.</span>
+
+<span class="sd">    :param lists: List with elements.</span>
+<span class="sd">    :type lists: List</span>
+
+<span class="sd">    :param offset: Offset of numeration.</span>
+<span class="sd">    :type offset: Integer</span>
+
+<span class="sd">    :returns: Dictionary with numbers as keys, and elements of the list as</span>
+<span class="sd">        values.</span>
+<span class="sd">    :rtype: Dictionary.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; list = [&quot;I&quot;, &quot;Love&quot;, &quot;Computer&quot;, &quot;Science&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; list2dict(list, 2)</span>
+<span class="sd">    {2: &#39;I&#39;, 3: &#39;Love&#39;, 4: &#39;Computer&#39;, 5: &#39;Science&#39;}</span>
+<span class="sd">         </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lists</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="get_total_nodes"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_total_nodes">[docs]</a><span class="k">def</span> <span class="nf">get_total_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the total number of atoms.</span>
+
+<span class="sd">    :param graph: Dictionary representing the atoms in each tcc state.</span>
+<span class="sd">    :type graph: Dictionary</span>
+
+<span class="sd">    :returns: The total number of atoms.</span>
+<span class="sd">    :rtype: Integer</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt;&gt; graph = {1: [[Formula({&#39;&#39;: &#39;in=true&#39;}), Formula({&#39;o&#39;: &#39;x=2&#39;})],</span>
+<span class="sd">    ... [Formula({&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}})]],</span>
+<span class="sd">    ... 2: [[Formula({&#39;~&#39;: &#39;in=true&#39;}),Formula({&#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}})]]}</span>
+<span class="sd">    &gt;&gt;&gt; get_total_nodes(graph)</span>
+<span class="sd">    3</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:class:`formula.Formula`</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">index_node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_node</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">total</span></div>
+
+
+<div class="viewcode-block" id="get_model_checking_atoms"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_model_checking_atoms">[docs]</a><span class="k">def</span> <span class="nf">get_model_checking_atoms</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the atoms corresponding to the states of a tcc structure.</span>
+
+<span class="sd">    :param tcc_structure: Structure representing the behaviour of a system.</span>
+<span class="sd">    :type tcc_structure: Dictionary</span>
+
+<span class="sd">    :param atoms: List of all possible atoms of closure.</span>
+<span class="sd">    :type atoms: List of atoms</span>
+
+<span class="sd">    :returns: Dictionary that have the states of a tcc structure as keys, and a</span>
+<span class="sd">        list of consistent atoms as values.</span>
+<span class="sd">    :rtype: Dictionary</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; tcc_structure = {</span>
+<span class="sd">    ... 1: {&quot;store&quot;: [Formula({&quot;&quot;:&quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 2: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 3: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 4: {&quot;store&quot;: [Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 5: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 6: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; model_checking_atoms = get_model_checking_atoms(tcc_structure,atoms)</span>
+<span class="sd">    &gt;&gt;&gt; for tcc_node in model_checking_atoms.keys():</span>
+<span class="sd">    ...     print(&quot;tcc State&quot;, tcc_node)</span>
+<span class="sd">    ...     tcc_atoms = model_checking_atoms.get(tcc_node)</span>
+<span class="sd">    ...     for atom_index in tcc_atoms.keys():</span>
+<span class="sd">    ...             print(&quot;Atom &quot;, atom_index)</span>
+<span class="sd">    ...             for formula in tcc_atoms.get(atom_index):</span>
+<span class="sd">    ...                     (formula.get_formula(), &quot; | &quot;,)</span>
+<span class="sd">    ...             print(&quot;\\n&quot;)</span>
+<span class="sd">    tcc State 1</span>
+<span class="sd">    Atom  1</span>
+<span class="sd">    {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}  |  {&#39;&#39;: &#39;in=true&#39;}  |  {&#39;o&#39;: &#39;x=2&#39;}  |  {&#39;&#39;: &#39;x=2&#39;}  |  {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |  {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |</span>
+<span class="sd">    Atom  2</span>
+<span class="sd">    {&#39;~&#39;: {&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}  |  {&#39;&#39;: &#39;in=true&#39;}  |  {&#39;o&#39;: &#39;x=2&#39;}  |  {&#39;&#39;: &#39;x=2&#39;}  |  {&#39;o&#39;: {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}}  |  {&#39;~&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}  |  {&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}  |</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_checking_atoms</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">tcc_node</span> <span class="ow">in</span> <span class="n">tcc_structure</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;looking for proposition of the state </span><span class="si">{}</span><span class="s2"> of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">tcc_node</span><span class="p">,</span> <span class="n">tcc_structure</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">atoms_node</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">propositions</span> <span class="o">=</span> <span class="n">tcc_structure</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tcc_node</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">proposition</span> <span class="ow">in</span> <span class="n">propositions</span><span class="p">:</span>  <span class="c1"># Propositions as formulas</span>
+            <span class="n">index_atom</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">l_delete_atoms</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">while</span> <span class="n">index_atom</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms_node</span><span class="p">):</span>
+                <span class="n">atom</span> <span class="o">=</span> <span class="n">atoms_node</span><span class="p">[</span><span class="n">index_atom</span><span class="p">]</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------------------------&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;evaluating proposition: &quot;</span><span class="p">,</span> <span class="n">proposition</span><span class="o">.</span><span class="n">get_formula</span><span class="p">())</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">atom</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_formula</span><span class="p">())</span>
+
+                <span class="k">if</span> <span class="n">is_consistent</span><span class="p">(</span><span class="n">proposition</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;it is consistent&quot;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">proposition</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;^&quot;</span><span class="p">:</span>
+                        <span class="n">subformulas</span> <span class="o">=</span> <span class="n">proposition</span><span class="o">.</span><span class="n">get_subformulas</span><span class="p">()</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">atom</span><span class="p">):</span>
+                            <span class="n">atoms_node</span><span class="p">[</span><span class="n">index_atom</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="n">clean_connector</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">atom</span><span class="p">):</span>
+                            <span class="n">atoms_node</span><span class="p">[</span><span class="n">index_atom</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="n">clean_connector</span><span class="p">(</span><span class="n">subformulas</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="n">proposition</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">atom</span><span class="p">):</span>
+                        <span class="n">atoms_node</span><span class="p">[</span><span class="n">index_atom</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proposition</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;it is not consistent&quot;</span><span class="p">)</span>
+                    <span class="n">l_delete_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_atom</span><span class="p">)</span>
+
+                <span class="n">index_atom</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">atoms_node</span> <span class="o">=</span> <span class="n">delete_atoms</span><span class="p">(</span><span class="n">atoms_node</span><span class="p">,</span> <span class="n">l_delete_atoms</span><span class="p">)</span>
+
+        <span class="n">model_checking_atoms</span><span class="p">[</span><span class="n">tcc_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">list2dict</span><span class="p">(</span>
+            <span class="n">atoms_node</span><span class="p">,</span> <span class="n">get_total_nodes</span><span class="p">(</span><span class="n">model_checking_atoms</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model_checking_atoms</span></div>
+
+
+<div class="viewcode-block" id="is_next_state"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.is_next_state">[docs]</a><span class="k">def</span> <span class="nf">is_next_state</span><span class="p">(</span><span class="n">next_formulas</span><span class="p">,</span> <span class="n">next_atom</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if an atom satisfies a list of formulas with next operator as main</span>
+<span class="sd">    connective.</span>
+
+<span class="sd">    :param next_formulas: List of formulas with next operator as main</span>
+<span class="sd">        connective.</span>
+<span class="sd">    :type next_formulas: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :param next_atom: Atom.</span>
+<span class="sd">    :type next_atom: List of :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :returns: ``True`` if the atom satisfies the temporal formulas or ``False``</span>
+<span class="sd">        otherwise.</span>
+<span class="sd">    :rtype: Boolean</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; atom = [Formula({&#39;o&#39;: {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}}),</span>
+<span class="sd">    ... Formula({&#39;&#39;: &#39;in=true&#39;}), Formula({&#39;o&#39;: &#39;x=2&#39;}), Formula({&#39;&#39;: &#39;x=2&#39;}),</span>
+<span class="sd">    ... Formula({&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}),</span>
+<span class="sd">    ... Formula({&#39;~&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}})]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; formulas = [Formula({&#39;o&#39;: &#39;x=2&#39;})]</span>
+<span class="sd">    &gt;&gt;&gt; is_next_state(formulas,atom)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        We say that an atom satisfies a list of formulas when for all the</span>
+<span class="sd">        formulas :math:`\circ\phi` in the list we found a formula :math:`\phi`</span>
+<span class="sd">        in the atom.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:class:`formula.Formula`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">next_formulas</span><span class="p">:</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_in_atom</span><span class="p">(</span><span class="nb">next</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="n">next_atom</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="get_model_checking__graph"><a class="viewcode-back" href="../../model_checking_graph.html#tccMChecker.model_checking_graph.get_model_checking__graph">[docs]</a><span class="k">def</span> <span class="nf">get_model_checking__graph</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span> <span class="n">model_checking_atoms</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the model checking graph</span>
+
+<span class="sd">    :param tcc_structure: Structure representing the behavior of a system.</span>
+<span class="sd">    :type tcc_structure: Dictionary</span>
+
+<span class="sd">    :param model_checking_atoms: Atoms of a tcc structure.</span>
+<span class="sd">    :type model_checking_atoms: Dictionary</span>
+
+<span class="sd">    :returns: Structure representing the model checking graph.</span>
+<span class="sd">    :rtype: Dictionary</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_graph import *</span>
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.closure import *</span>
+<span class="sd">    &gt;&gt;&gt; tcc_structure = {</span>
+<span class="sd">    ...  1: {&quot;store&quot;: [Formula({&quot;&quot;:&quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 2: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 3: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 4: {&quot;store&quot;: [Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 5: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 6: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; closure = []</span>
+<span class="sd">    &gt;&gt;&gt; get_closure(phi,closure)</span>
+<span class="sd">    &gt;&gt;&gt; atoms = get_all_atoms(closure)</span>
+<span class="sd">    &gt;&gt;&gt; model_checking_atoms = get_model_checking_atoms(tcc_structure,atoms)</span>
+<span class="sd">    &gt;&gt;&gt; get_model_checking__graph(tcc_structure, model_checking_atoms)</span>
+<span class="sd">    {1: [9, 11, 12, 13, 15], 2: [10, 16, 14], 3: [], 4: [], 5: [9, 11, 12, 13, 15], 6: [10, 16, 14], 7: [], 8: [], 9: [9, 11, 12, 13, 15], 10: [10, 16, 14], 11: [], 12: [], 13: [], 14: [], 15: [25, 27, 28, 29, 31], 16: [26, 32, 30], 17: [], 18: [], 19: [25, 27, 28, 29, 31], 20: [26, 32, 30], 21: [], 22: [], 23: [25, 27, 28, 29, 31], 24: [26, 32, 30], 25: [9, 11, 12, 13, 15], 26: [10, 16, 14], 27: [], 28: [], 29: [], 30: [], 31: [25, 27, 28, 29, 31], 32: [26, 32, 30]}</span>
+
+<span class="sd">    .. figure:: ./img/example_model_checking_graph.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">        :height: 400px</span>
+
+<span class="sd">        Model checking graph generated.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:func:`closure.getClosure`, :py:class:`formula.Formula`,</span>
+<span class="sd">        :py:func:`.getAllAtoms`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_checking_graph</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">tcc_node</span> <span class="ow">in</span> <span class="n">tcc_structure</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">atoms_tcc_node</span> <span class="o">=</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tcc_node</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index_n1</span> <span class="ow">in</span> <span class="n">atoms_tcc_node</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">atom_n1</span> <span class="o">=</span> <span class="n">atoms_tcc_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_n1</span><span class="p">)</span>
+            <span class="n">next_formulas</span> <span class="o">=</span> <span class="n">search_formulas</span><span class="p">(</span><span class="n">atom_n1</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">)</span>
+            <span class="n">next_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">next_tcc_node</span> <span class="ow">in</span> <span class="n">tcc_structure</span><span class="p">[</span><span class="n">tcc_node</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;edges&quot;</span><span class="p">):</span>
+                <span class="n">atoms_next_tcc_node</span> <span class="o">=</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">next_tcc_node</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">index_n2</span> <span class="ow">in</span> <span class="n">atoms_next_tcc_node</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">atom_n2</span> <span class="o">=</span> <span class="n">atoms_next_tcc_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index_n2</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">is_next_state</span><span class="p">(</span><span class="n">next_formulas</span><span class="p">,</span> <span class="n">atom_n2</span><span class="p">):</span>
+                        <span class="n">next_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_n2</span><span class="p">)</span>
+            <span class="n">model_checking_graph</span><span class="p">[</span><span class="n">index_n1</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_nodes</span>
+    <span class="k">return</span> <span class="n">model_checking_graph</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Jaime Arias.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

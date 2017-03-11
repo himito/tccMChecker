@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tccMChecker.formula &#8212; tccMChecker 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tccMChecker.formula</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains the class to describe a temporal formula.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+
+<div class="viewcode-block" id="Formula"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula">[docs]</a><span class="k">class</span> <span class="nc">Formula</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;This class represents a temporal formula.</span>
+
+<span class="sd">    :param data: Structure representing the temporal formula.</span>
+<span class="sd">    :type data: Dictionary.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    :math:`\phi = \diamondsuit(\mathtt{in=true} \wedge \neg\circ(\mathtt{x=2}))`</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">    &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Logic operators are represented by the following symbols:</span>
+
+<span class="sd">        * Globally : ``[]``</span>
+<span class="sd">        * Future : ``&lt;&gt;``</span>
+<span class="sd">        * Next : ``o``</span>
+<span class="sd">        * Negation : ``~``</span>
+<span class="sd">        * Or : ``v``</span>
+<span class="sd">        * And : ``^``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__propositions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;da=0&quot;</span><span class="p">,</span> <span class="s2">&quot;da=5&quot;</span><span class="p">,</span> <span class="s2">&quot;da=10&quot;</span><span class="p">,</span> <span class="s2">&quot;da=15&quot;</span><span class="p">,</span> <span class="s2">&quot;da=20&quot;</span><span class="p">,</span> <span class="s2">&quot;b=0&quot;</span><span class="p">,</span> <span class="s2">&quot;b=1&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;b=2&quot;</span><span class="p">,</span> <span class="s2">&quot;b=3&quot;</span><span class="p">,</span> <span class="s2">&quot;sm=0&quot;</span><span class="p">,</span> <span class="s2">&quot;sm=5&quot;</span><span class="p">,</span> <span class="s2">&quot;sm=10&quot;</span><span class="p">,</span> <span class="s2">&quot;tc&quot;</span><span class="p">,</span> <span class="s2">&quot;tt&quot;</span><span class="p">,</span> <span class="s2">&quot;dc&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;dd&quot;</span><span class="p">]</span>
+    <span class="n">__proposition_rules</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;da=0&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;da=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=10&quot;</span><span class="p">},</span>
+                                    <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=15&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=20&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;da=5&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;da=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=10&quot;</span><span class="p">},</span>
+                                    <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=15&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=20&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;da=10&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;da=10&quot;</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=15&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=20&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;da=15&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=10&quot;</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;da=15&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=20&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;da=20&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=10&quot;</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;da=15&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;da=20&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;b=0&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;b=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=1&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=2&quot;</span><span class="p">},</span>
+                                   <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=3&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;b=1&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;b=1&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=2&quot;</span><span class="p">},</span>
+                                   <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=3&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;b=2&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=1&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;b=2&quot;</span><span class="p">},</span>
+                                   <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=3&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;b=3&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=1&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;b=2&quot;</span><span class="p">},</span>
+                                   <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;b=3&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;sm=0&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=10&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;sm=5&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=5&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=10&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;sm=10&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=0&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=5&quot;</span><span class="p">},</span>
+                                     <span class="p">{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;sm=10&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;tc&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;tc&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;tt&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;tt&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;dc&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;dc&quot;</span><span class="p">}],</span>
+                           <span class="s2">&quot;dd&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;dd&quot;</span><span class="p">}],</span>
+                           <span class="p">}</span>
+    <span class="n">__operators</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;[]&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;~&quot;</span><span class="p">]</span>
+    <span class="n">__formula</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor method.</span>
+
+<span class="sd">        :param data: Structure representing the temporal formula.</span>
+<span class="sd">        :type data: Dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span> <span class="o">=</span> <span class="n">data</span>
+
+<div class="viewcode-block" id="Formula.get_consistent_propositions"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_consistent_propositions">[docs]</a>    <span class="k">def</span> <span class="nf">get_consistent_propositions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the consistent propositions of a formula.</span>
+
+<span class="sd">        :returns: A structure representing the consistent proposition of the</span>
+<span class="sd">            formula.</span>
+<span class="sd">        :rtype: Dictionary.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :math:`\phi = (x = 2) \hspace{2cm} consistentPropositions(\phi) = \neg(x=1)`</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&quot;: &quot;x=2&quot;})</span>
+<span class="sd">        &gt;&gt;&gt; phi.get_consistent_propositions()</span>
+<span class="sd">        {&#39;~&#39;: &#39;x=1&#39;}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__proposition_rules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Formula.get_formula"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_formula">[docs]</a>    <span class="k">def</span> <span class="nf">get_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the formula.</span>
+
+<span class="sd">        :returns: A structure representing the formula.</span>
+<span class="sd">        :rtype: Dictionary.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.get_formula()</span>
+<span class="sd">        {&#39;&lt;&gt;&#39;: {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span></div>
+
+<div class="viewcode-block" id="Formula.get_proposition_rules"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_proposition_rules">[docs]</a>    <span class="k">def</span> <span class="nf">get_proposition_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the consistent propositions of all propositions in the</span>
+<span class="sd">        implementation.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :returns: A dictionary containing as key a proposition, and value all</span>
+<span class="sd">            possible propositions that are consistent.</span>
+<span class="sd">        :rtype: Dictionary.</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.get_proposition_rules()</span>
+<span class="sd">        {&#39;x=1&#39;: {&#39;~&#39;: &#39;x=2&#39;}, &#39;x=2&#39;: {&#39;~&#39;: &#39;x=1&#39;}}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__proposition_rules</span></div>
+
+<div class="viewcode-block" id="Formula.get_values"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the formula without the outermost unary operator.</span>
+
+<span class="sd">        :returns: A structure representing the formula without the outermost</span>
+<span class="sd">            unary operator.</span>
+<span class="sd">        :rtype: Dictionary</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :math:`{\tiny \phi = \diamondsuit(\mathtt{in=true} \wedge \neg\circ(\mathtt{x=2})) \hspace{1cm} getValues(\phi) = (\mathtt{in=true}) \wedge \neg\circ(\mathtt{x=2})}`</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.get_values()</span>
+<span class="sd">        {&#39;^&#39;: {&#39;&#39;: &#39;in=true&#39;, &#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Formula.get_negation"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_negation">[docs]</a>    <span class="k">def</span> <span class="nf">get_negation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the negation of the formula.</span>
+
+<span class="sd">        :returns: The negation of the formula.</span>
+<span class="sd">        :rtype: :py:class:`~formula.Formula`.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :math:`\phi = \circ(\mathtt{x=2}) \hspace{2cm} \neg\phi = \neg\circ(\mathtt{x=2})`</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;o&quot;:&quot;x=2&quot;})</span>
+<span class="sd">        &gt;&gt;&gt; negPhi = phi.get_negation()</span>
+<span class="sd">        &gt;&gt;&gt; negPhi.get_formula()</span>
+<span class="sd">        {&#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;~&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Formula</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="Formula.get_subformulas"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_subformulas">[docs]</a>    <span class="k">def</span> <span class="nf">get_subformulas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the subformulas attached to a binary operator.</span>
+
+<span class="sd">        :returns: A list containing the subformulas.</span>
+<span class="sd">        :rtype: List.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :math:`\alpha = (\mathtt{in=true}) \wedge \neg\circ(\mathtt{x=2}) \hspace{1cm} \phi= (\mathtt{in=true})  \hspace{1cm} \psi= \neg\circ(\mathtt{x=2})`</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; alpha = Formula({&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}})</span>
+<span class="sd">        &gt;&gt;&gt; subformulas = alpha.get_subformulas()</span>
+<span class="sd">        &gt;&gt;&gt; for subformula in subformulas:</span>
+<span class="sd">        ...     print(subformula.get_formula())</span>
+<span class="sd">        {&#39;&#39;: &#39;in=true&#39;}</span>
+<span class="sd">        {&#39;~&#39;: {&#39;o&#39;: &#39;x=2&#39;}}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">subformulas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_formula</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span>
+        <span class="n">connectives</span> <span class="o">=</span> <span class="n">new_formula</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">connective</span> <span class="ow">in</span> <span class="n">connectives</span><span class="p">:</span>
+            <span class="n">subformulas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Formula</span><span class="p">({</span><span class="n">connective</span><span class="p">:</span> <span class="n">new_formula</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">connective</span><span class="p">)}))</span>
+        <span class="k">return</span> <span class="n">subformulas</span></div>
+
+<div class="viewcode-block" id="Formula.get_connective"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.get_connective">[docs]</a>    <span class="k">def</span> <span class="nf">get_connective</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the main connective of the formula.</span>
+
+<span class="sd">        :returns: A string representing the main connective of the formula.</span>
+<span class="sd">        :rtype: String.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        :math:`\phi = \diamondsuit(\mathtt{in=true} \wedge \neg\circ(\mathtt{x=2})) \hspace{2cm} getConnective(\phi) = \diamondsuit`</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.get_connective()</span>
+<span class="sd">        &#39;&lt;&gt;&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Formula.is_proposition"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.is_proposition">[docs]</a>    <span class="k">def</span> <span class="nf">is_proposition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the formula is a proposition.</span>
+
+<span class="sd">        :returns: ``True`` if the formula is a proposition or ``False``</span>
+<span class="sd">            otherwise.</span>
+<span class="sd">        :rtype: Boolean.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;&quot;:&quot;x=2&quot;})</span>
+<span class="sd">        &gt;&gt;&gt; phi.is_proposition()</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__operators</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__propositions</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Formula.is_negative_next"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.is_negative_next">[docs]</a>    <span class="k">def</span> <span class="nf">is_negative_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the formula is of the form :math:`\neg\circ\phi`.</span>
+
+<span class="sd">        :returns: ``True`` if the formula is of the form :math:`\neg\circ\phi`</span>
+<span class="sd">            or ``False`` otherwise.</span>
+<span class="sd">        :rtype: Boolean.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;~&quot;: {&quot;o&quot;:&quot;x=2&quot;}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.is_negative_next()</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;~&quot;</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">str</span> <span class="ow">and</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;o&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Formula.is_basic"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.is_basic">[docs]</a>    <span class="k">def</span> <span class="nf">is_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the formula is a basic formula (i.e. proposition or it has</span>
+<span class="sd">        :math:`\circ` as main connective)</span>
+
+<span class="sd">        :returns: ``True`` if the formula is a basic formula or ``False``</span>
+<span class="sd">            otherwise.</span>
+<span class="sd">        :rtype: Boolean.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;o&quot;:&quot;x=2&quot;})</span>
+<span class="sd">        &gt;&gt;&gt; phi.is_basic()</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;~&quot;</span> <span class="ow">and</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proposition</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;o&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;o&quot;</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span> <span class="o">!=</span> <span class="nb">str</span> \
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;~&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Formula.is_negative_formula"><a class="viewcode-back" href="../../formula.html#tccMChecker.formula.Formula.is_negative_formula">[docs]</a>    <span class="k">def</span> <span class="nf">is_negative_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns if the formula has :math:`\neg` as main connective.</span>
+
+<span class="sd">        :returns: ``True`` if the formula has :math:`\neg` as main connective</span>
+<span class="sd">            or ``False`` otherwise.</span>
+<span class="sd">        :rtype: Boolean.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from tccMChecker.formula import *</span>
+<span class="sd">        &gt;&gt;&gt; phi = Formula({&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}})</span>
+<span class="sd">        &gt;&gt;&gt; phi.is_negative_formula()</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">subformula</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;~&quot;</span> <span class="ow">and</span>
+                <span class="p">(</span><span class="n">subformula</span><span class="o">.</span><span class="n">get_connective</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__operators</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Jaime Arias.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

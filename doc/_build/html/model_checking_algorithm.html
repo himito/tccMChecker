@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Model Checking Algorithm &#8212; tccMChecker 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Print Graphs" href="print_graph.html" />
+    <link rel="prev" title="Searching Algorithm" href="searching_algorithm.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="print_graph.html" title="Print Graphs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="searching_algorithm.html" title="Searching Algorithm"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">tccMChecker 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="searching_algorithm.html"
+                        title="previous chapter">Searching Algorithm</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="print_graph.html"
+                        title="next chapter">Print Graphs</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/model_checking_algorithm.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-tccMChecker.model_checking_algorithm">
+<span id="model-checking-algorithm"></span><h1>Model Checking Algorithm<a class="headerlink" href="#module-tccMChecker.model_checking_algorithm" title="Permalink to this headline">¶</a></h1>
+<p>This module implements the algorithm for LTL model checking.</p>
+<dl class="function">
+<dt id="tccMChecker.model_checking_algorithm.model_satisfies_property">
+<code class="descclassname">tccMChecker.model_checking_algorithm.</code><code class="descname">model_satisfies_property</code><span class="sig-paren">(</span><em>formula</em>, <em>tcc_structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tccMChecker/model_checking_algorithm.html#model_satisfies_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tccMChecker.model_checking_algorithm.model_satisfies_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a model satisfies a formula.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formula</strong> (<code class="xref py py-class docutils literal"><span class="pre">Formula</span></code>) &#8211; Formula</li>
+<li><strong>tcc_structure</strong> (<em>Dictionary</em>) &#8211; tcc Structure</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">True</span></code> if the model satisfies the formula or <code class="docutils literal"><span class="pre">False</span></code> otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Boolean</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tccMChecker.model_checking_algorithm</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tcc_structure</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t4&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t4&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;x=2&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;now2&quot;</span><span class="p">],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t7&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">4</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;now2&quot;</span><span class="p">],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t7&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">5</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t4&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="gp">... </span><span class="mi">6</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;x=1&quot;</span><span class="p">}),</span><span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;~&quot;</span><span class="p">:</span> <span class="s2">&quot;in=true&quot;</span><span class="p">})],</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;now2&quot;</span><span class="p">],</span> <span class="s2">&quot;temporal&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;t7&quot;</span><span class="p">,</span><span class="s2">&quot;p9&quot;</span><span class="p">],</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formula</span> <span class="o">=</span> <span class="n">Formula</span><span class="p">({</span><span class="s2">&quot;&lt;&gt;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;^&quot;</span><span class="p">:{</span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="s2">&quot;in=true&quot;</span><span class="p">,</span><span class="s2">&quot;~&quot;</span><span class="p">:{</span><span class="s2">&quot;o&quot;</span><span class="p">:</span><span class="s2">&quot;x=2&quot;</span><span class="p">}}}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_satisfies_property</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">tcc_structure</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The model checking algorithm is based on the work performed by
+Falaschi and Villanueva <a class="reference internal" href="#fv06" id="id1">[FV06]</a>. For this reason, we need to use the
+negation of the formula as input of this function and we say that the
+model satisfies the property if this function returns <code class="docutils literal"><span class="pre">False</span></code> (i.e the
+model does not satisfy the negation of the formula).</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-class docutils literal"><span class="pre">formula.Formula</span></code></p>
+</div>
+</dd></dl>
+
+<table class="docutils citation" frame="void" id="fv06" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[FV06]</a></td><td>Moreno Falaschi and Alicia Villanueva. Automatic Verification of Timed Concurrent Constraint Programs. Theory and Practice of Logic Programming, 6(3):265–300, 2006. 1</td></tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="print_graph.html" title="Print Graphs"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="searching_algorithm.html" title="Searching Algorithm"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">tccMChecker 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Jaime Arias.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

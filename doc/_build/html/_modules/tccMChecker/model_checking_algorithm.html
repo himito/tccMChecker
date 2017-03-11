@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tccMChecker.model_checking_algorithm &#8212; tccMChecker 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tccMChecker.model_checking_algorithm</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module implements the algorithm for LTL model checking.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">tarjan</span>
+
+<span class="kn">from</span> <span class="nn">closure</span> <span class="k">import</span> <span class="n">get_closure</span>
+<span class="kn">from</span> <span class="nn">model_checking_graph</span> <span class="k">import</span> <span class="n">get_all_atoms</span><span class="p">,</span> <span class="n">get_model_checking_atoms</span><span class="p">,</span> \
+    <span class="n">get_model_checking__graph</span>
+<span class="kn">from</span> <span class="nn">searching_algorithm</span> <span class="k">import</span> <span class="n">get_model_checking_scc_subgraphs</span><span class="p">,</span> <span class="n">get_initial_nodes</span><span class="p">,</span> \
+    <span class="n">is_self_fulfilling</span><span class="p">,</span> <span class="n">initial_nodes_entail_formula</span>
+
+
+<div class="viewcode-block" id="model_satisfies_property"><a class="viewcode-back" href="../../model_checking_algorithm.html#tccMChecker.model_checking_algorithm.model_satisfies_property">[docs]</a><span class="k">def</span> <span class="nf">model_satisfies_property</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">tcc_structure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a model satisfies a formula.</span>
+
+<span class="sd">    :param formula: Formula</span>
+<span class="sd">    :type formula: :py:class:`~formula.Formula`</span>
+
+<span class="sd">    :param tcc_structure: tcc Structure</span>
+<span class="sd">    :type tcc_structure: Dictionary</span>
+
+<span class="sd">    :returns: ``True`` if the model satisfies the formula or ``False`` otherwise.</span>
+<span class="sd">    :rtype: Boolean</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from tccMChecker.model_checking_algorithm import *</span>
+<span class="sd">    &gt;&gt;&gt; tcc_structure = {</span>
+<span class="sd">    ... 1: {&quot;store&quot;: [Formula({&quot;&quot;:&quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 2: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 3: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=2&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 4: {&quot;store&quot;: [Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: True},</span>
+<span class="sd">    ... 5: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [], &quot;temporal&quot;: [&quot;t4&quot;,&quot;p9&quot;], &quot;edges&quot;: [2,3], &quot;initial&quot;: False},</span>
+<span class="sd">    ... 6: {&quot;store&quot;: [Formula({&quot;&quot;: &quot;x=1&quot;}),Formula({&quot;~&quot;: &quot;in=true&quot;})], &quot;normal&quot;: [&quot;now2&quot;], &quot;temporal&quot;: [&quot;t7&quot;,&quot;p9&quot;], &quot;edges&quot;: [5,6], &quot;initial&quot;: False}</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; formula = Formula({&quot;&lt;&gt;&quot;: {&quot;^&quot;:{&quot;&quot;:&quot;in=true&quot;,&quot;~&quot;:{&quot;o&quot;:&quot;x=2&quot;}}}})</span>
+<span class="sd">    &gt;&gt;&gt; model_satisfies_property(formula, tcc_structure)</span>
+<span class="sd">    False</span>
+
+<span class="sd">    .. note:: The model checking algorithm is based on the work performed by</span>
+<span class="sd">        Falaschi and Villanueva [FV06]_. For this reason, we need to use the</span>
+<span class="sd">        negation of the formula as input of this function and we say that the</span>
+<span class="sd">        model satisfies the property if this function returns ``False`` (i.e the</span>
+<span class="sd">        model does not satisfy the negation of the formula).</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :py:class:`formula.Formula`</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Closure</span>
+    <span class="n">closure</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">get_closure</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">closure</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Closure: </span><span class="si">{}</span><span class="s2"> formulas&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">closure</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">formula_closure</span> <span class="ow">in</span> <span class="n">closure</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">formula_closure</span><span class="o">.</span><span class="n">get_formula</span><span class="p">())</span>
+
+    <span class="c1"># All possible atoms</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="n">get_all_atoms</span><span class="p">(</span><span class="n">closure</span><span class="p">)</span>
+
+    <span class="c1"># Model Checking Atoms</span>
+    <span class="n">model_checking_atoms</span> <span class="o">=</span> <span class="n">get_model_checking_atoms</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tcc_node</span> <span class="ow">in</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">tcc_atoms</span> <span class="o">=</span> <span class="n">model_checking_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tcc_node</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Atom State </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tcc_node</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tcc_atoms</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">tcc_atoms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Atom &quot;</span><span class="p">,</span> <span class="n">atom_index</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">formula_atom</span> <span class="ow">in</span> <span class="n">tcc_atoms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atom_index</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">formula_atom</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(),</span> <span class="s2">&quot; | &quot;</span><span class="p">,</span> <span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Model Checking Graph</span>
+    <span class="n">model_checking_graph</span> <span class="o">=</span> <span class="n">get_model_checking__graph</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span>
+                                                     <span class="n">model_checking_atoms</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model Checking Graph: </span><span class="si">{}</span><span class="s2"> nodes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="nb">max</span><span class="p">(</span><span class="n">model_checking_graph</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model_checking_graph</span><span class="p">)</span>
+
+    <span class="c1"># Strongly Connected Components</span>
+    <span class="n">strongly_connected_components</span> <span class="o">=</span> <span class="n">tarjan</span><span class="p">(</span><span class="n">model_checking_graph</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Strongly Connected Components: &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">strongly_connected_components</span><span class="p">)</span>
+
+    <span class="n">model_checking_scc_subgraphs</span> <span class="o">=</span> <span class="n">get_model_checking_scc_subgraphs</span><span class="p">(</span>
+        <span class="n">strongly_connected_components</span><span class="p">,</span> <span class="n">tcc_structure</span><span class="p">,</span> <span class="n">model_checking_atoms</span><span class="p">,</span>
+        <span class="n">model_checking_graph</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model Checking SCC Subgraphs:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_checking_scc_subgraphs</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">model_checking_scc_subgraphs</span><span class="p">)</span>
+
+    <span class="c1"># Self-Fulfilling SCC and Initial Nodes</span>
+    <span class="n">initial_nodes</span> <span class="o">=</span> <span class="n">get_initial_nodes</span><span class="p">(</span><span class="n">tcc_structure</span><span class="p">,</span> <span class="n">model_checking_atoms</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">scc_n</span><span class="p">,</span> <span class="n">scc_graph</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model_checking_scc_subgraphs</span><span class="p">):</span>
+        <span class="n">self_fulfilling_scc</span> <span class="o">=</span> <span class="n">is_self_fulfilling</span><span class="p">(</span><span class="n">scc_graph</span><span class="p">,</span> <span class="n">initial_nodes</span><span class="p">,</span>
+                                                 <span class="n">model_checking_atoms</span><span class="p">)</span>
+        <span class="n">entail_formula</span> <span class="o">=</span> <span class="n">initial_nodes_entail_formula</span><span class="p">(</span><span class="n">scc_graph</span><span class="p">,</span> <span class="n">initial_nodes</span><span class="p">,</span>
+                                                      <span class="n">model_checking_atoms</span><span class="p">,</span>
+                                                      <span class="n">formula</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SCC Graph&quot;</span><span class="p">,</span> <span class="n">scc_n</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is Self Fulfilling: &quot;</span><span class="p">,</span> <span class="n">self_fulfilling_scc</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial Nodes Entail Formula: &quot;</span><span class="p">,</span> <span class="n">entail_formula</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">self_fulfilling_scc</span> <span class="ow">and</span> <span class="n">entail_formula</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">tccMChecker 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Jaime Arias.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
