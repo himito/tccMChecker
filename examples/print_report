@@ -1,1 +1,1 @@
-python tccMChecker.py > output ; head -n 4 output ; grep "Model Checking Graph:" output ; grep "Model Checking SCC Subgraphs:" output ; grep -A 2 "SCC Graph" output; tail -n 2 output
+python examples.py > output ; head -n 4 output ; grep "Model Checking Graph:" output ; grep "Model Checking SCC Subgraphs:" output ; grep -A 2 "SCC Graph" output; tail -n 2 output

@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-import tarjan
+from tarjan import tarjan
 
 from closure import get_closure
 from model_checking_graph import get_all_atoms, get_model_checking_atoms, \

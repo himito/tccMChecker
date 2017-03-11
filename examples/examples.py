@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-
+from __future__ import print_function
 from tccMChecker.formula import Formula
 from tccMChecker.model_checking_algorithm import model_satisfies_property
 
@@ -389,3 +388,4 @@ if __name__ == "__main__":
     result = model_satisfies_property(phi, tcc_structure)
 
     print("***************** RESULT: *****************")
+    print("Model Satisfies Formula: ", not result)
